@@ -172,7 +172,16 @@ mount --rbind /proc /mnt/proc && mount --make-rslave /mnt/proc
 cp /etc/resolv.conf /mnt/etc/
 
 # configure locales:
+# setting hostname
+echo "keymap:" &&
+read -p "Please enter a valid Keymap : " CHN &&
+echo $CHN > /mnt/etc/hostname &&
+echo "done!" &&
+
 chroot /mnt/ xbps-reconfigure -f glibc-locales
+
+
+
 
 # configure users:
 chroot /mnt xbps-install -Sy sudo
@@ -184,6 +193,9 @@ chroot /mnt usermod -a -G wheel $USRNME &&
 echo "locking root user" &&
 chroot /mnt passwd -l root &&
 echo "done" &&
+chroot echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers &&
+chroot echo "%wheel ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown" >> /etc/sudoers &&
+passwd -l root &&
 
 # configuring fstab
 echo $SWAPPART " swap swap rw,noatime,discard 0 0" >> /mnt/etc/fstab
@@ -210,10 +222,27 @@ else
     echo "done";
 fi
 
+
+
+# installing microcode
+VENDOR=$(grep vendor_id /proc/cpuinfo | head -n 1 | awk '{print $3}')
+if [ $VENDOR = AuthenticAMD ]; then
+    echo "detected AMD CPU"
+    chroot /mnt/ xbps-install -Sy linux-firmware-amd
+    elif [ $VENDOR = GenuineIntel ]; then
+    echo "detected Intel CPU"
+    # TODO: INSTALL INTEL DRIVERS
+fi
+
+# changing keymap to german
+    echo "setting keymap" &&
+    chroot /mnt/ echo "KEYMAP=de-latin1" >> /mnt/etc/vconsole.conf &&
+      echo "done" &&
+
 # finalizing installation
 chroot /mnt/ xbps-reconfigure -fa
 
 echo -e "\t${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
 echo -e "\t${bold}enjoy your new system :)${reset}"
 printf "\n"
-echo "you can reboot now..."
+echo "rebooting..."
