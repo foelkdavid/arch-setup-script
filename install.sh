@@ -116,10 +116,6 @@ createfilesystem() {
     #efi partition
     if [ $BOOTMODE = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
     
-    #swap partition
-    mkswap $SWAPPART &&
-    
-    
     
     echo $ROOTPART
     
@@ -128,7 +124,7 @@ createfilesystem() {
     
     
     #swap partition
-    swapon $SWAPPART &&
+    swapon $SWAPPART
 }
 
 
