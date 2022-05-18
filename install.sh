@@ -35,7 +35,7 @@ networkcheck() {
     ping -c 2 voidlinux.org > /dev/null && return 0 || return 1
 }
 
-# gets the used bootmode.
+# gets the used BOOTLOADER.
 # 0 = uefi
 # 1 = bios
 getbootloader() {
@@ -94,15 +94,15 @@ driveselect() {
 # creates filesystem
 createfilesystem() {
     #creating efi, swap, root partition for UEFI systems; creating swap, root partition for BIOS systems
-    if [ $BOOTMODE = UEFI ]; then printf "n\np\n \n \n+1G\nn\np\n \n \n+"$SWAPSIZE"G\nn\np\n \n \n \nw\n" | fdisk $DSK; else printf "n\np\n \n \n+"$SWAPSIZE"G\nn\np\n \n \n \nw\n" | fdisk $DSK; fi
+    if [ $BOOTLOADER = UEFI ]; then printf "n\np\n \n \n+1G\nn\np\n \n \n+"$SWAPSIZE"G\nn\np\n \n \n \nw\n" | fdisk $DSK; else printf "n\np\n \n \n+"$SWAPSIZE"G\nn\np\n \n \n \nw\n" | fdisk $DSK; fi
     partprobe $DSK &&
     #getting paths of partitions
     PARTITION1=$(fdisk -l $DSK | grep $DSK | sed 1d | awk '{print $1}' | sed -n "1p") &&
     PARTITION2=$(fdisk -l $DSK | grep $DSK | sed 1d | awk '{print $1}' | sed -n "2p") &&
-    if [ $BOOTMODE = UEFI ]; then PARTITION3=$(fdisk -l $DSK | grep $DSK | sed 1d | awk '{print $1}' | sed -n "3p"); else echo "No third Partition needet."; fi
+    if [ $BOOTLOADER = UEFI ]; then PARTITION3=$(fdisk -l $DSK | grep $DSK | sed 1d | awk '{print $1}' | sed -n "3p"); else echo "No third Partition needet."; fi
     
     #declaring partition paths as variables
-    if [ $BOOTMODE = UEFI ]; then
+    if [ $BOOTLOADER = UEFI ]; then
         EFIPART=$PARTITION1
         SWAPPART=$PARTITION2
         ROOTPART=$PARTITION3
@@ -114,7 +114,7 @@ createfilesystem() {
     
     #filesystem creation
     #efi partition
-    if [ $BOOTMODE = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
+    if [ $BOOTLOADER = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
     
     
     echo $ROOTPART
