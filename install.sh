@@ -174,7 +174,7 @@ cp /etc/resolv.conf /mnt/etc/
 # configure locales:
 while true; do
     read -p "Please enter a valid Keymap : " KMP &&
-    [ loadkeys $KMP ] && echo $KMP >> /mnt/etc/vconsole.conf && break ||  printf $(fail)" ${blue}$DISK${reset} is not a valid keymap\n"
+    chroot /mnt/ loadkeys $KMP && echo $KMP >> /mnt/etc/vconsole.conf && break ||  printf $(fail)" ${blue}$KMP${reset} is not a valid Keymap\n"
 done
 chroot /mnt/ xbps-reconfigure -f glibc-locales
 
