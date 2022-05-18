@@ -61,11 +61,6 @@ getswap() {
 
 
 
-#setting swapsize variable to RAMsize+4G
-SWAPSIZE=$(expr $RAM + 4) &&
-echo "SWAPSIZE = "  $SWAPSIZE &&
-
-
 driveselect() {
     # shows drives over 1GiB to the User
     echo -e "\t\tFollowing disks are recommendet:"
@@ -94,7 +89,7 @@ driveselect() {
 # creates filesystem
 createfilesystem() {
     #creating efi, swap, root partition for UEFI systems; creating swap, root partition for BIOS systems
-    if [ $BOOTLOADER = UEFI ]; then printf "n\np\n \n \n+1G\nn\np\n \n \n+"$SWAPSIZE"G\nn\np\n \n \n \nw\n" | fdisk $DSK; else printf "n\np\n \n \n+"$SWAPSIZE"G\nn\np\n \n \n \nw\n" | fdisk $DSK; fi
+    if [ $BOOTLOADER = UEFI ]; then printf "n\np\n \n \n+1G\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DSK; else printf "n\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DSK; fi
     partprobe $DSK &&
     #getting paths of partitions
     PARTITION1=$(fdisk -l $DSK | grep $DSK | sed 1d | awk '{print $1}' | sed -n "1p") &&
