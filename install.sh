@@ -172,30 +172,26 @@ mount --rbind /proc /mnt/proc && mount --make-rslave /mnt/proc
 cp /etc/resolv.conf /mnt/etc/
 
 # configure locales:
-# setting hostname
-echo "keymap:" &&
-read -p "Please enter a valid Keymap : " CHN &&
-echo $CHN > /mnt/etc/hostname &&
-echo "done!" &&
-
+while true; do
+    read -p "Please enter a valid Keymap : " KMP &&
+    [ loadkeys $KMP ] && echo $KMP >> /mnt/etc/vconsole.conf && break ||  printf $(fail)" ${blue}$DISK${reset} is not a valid keymap\n"
+done
 chroot /mnt/ xbps-reconfigure -f glibc-locales
-
-
 
 
 # configure users:
 chroot /mnt xbps-install -Sy sudo
 echo "creating new User" &&
 read -p "Please enter a valid username: " USRNME &&
-chroot /mnt useradd -m $USRNME &&
-chroot /mnt passwd $USRNME &&
-chroot /mnt usermod -a -G wheel $USRNME &&
+chroot /mnt/ useradd -m $USRNME &&
+chroot /mnt/ passwd $USRNME &&
+chroot /mnt/ usermod -a -G wheel $USRNME &&
 echo "locking root user" &&
-chroot /mnt passwd -l root &&
+chroot /mnt/ passwd -l root &&
 echo "done" &&
-chroot echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers &&
-chroot echo "%wheel ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown" >> /etc/sudoers &&
-passwd -l root &&
+chroot /mnt/ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers &&
+chroot /mnt/ echo "%wheel ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown" >> /etc/sudoers &&
+
 
 # configuring fstab
 echo $SWAPPART " swap swap rw,noatime,discard 0 0" >> /mnt/etc/fstab
@@ -234,10 +230,7 @@ if [ $VENDOR = AuthenticAMD ]; then
     # TODO: INSTALL INTEL DRIVERS
 fi
 
-# changing keymap to german
-    echo "setting keymap" &&
-    chroot /mnt/ echo "KEYMAP=de-latin1" >> /mnt/etc/vconsole.conf &&
-      echo "done" &&
+
 
 # finalizing installation
 chroot /mnt/ xbps-reconfigure -fa
