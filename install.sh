@@ -174,7 +174,7 @@ cp /etc/resolv.conf /mnt/etc/
 # configure locales:
 while true; do
     read -p "Please enter a valid Keymap : " KMP &&
-    chroot /mnt/ loadkeys $KMP && echo $KMP >> /mnt/etc/vconsole.conf && break ||  printf $(fail)" ${blue}$KMP${reset} is not a valid Keymap\n"
+    chroot /mnt/ loadkeys $KMP && echo "KEYMAP="$KMP >> /mnt/etc/rc.conf && break ||  printf $(fail)" ${blue}$KMP${reset} is not a valid Keymap\n"
 done
 chroot /mnt/ xbps-reconfigure -f glibc-locales
 
@@ -239,3 +239,5 @@ echo -e "\t${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
 echo -e "\t${bold}enjoy your new system :)${reset}"
 printf "\n"
 echo "rebooting..."
+cp -r add-ons /home/$USRNME
+reboot now
