@@ -196,7 +196,7 @@ chroot /mnt/ echo "%wheel ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbi
 # configuring fstab
 echo $SWAPPART " swap swap rw,noatime,discard 0 0" >> /mnt/etc/fstab
 echo $ROOTPART " / ext4 noatime 0 1" >> /mnt/etc/fstab
-if [ $BOOTMODE = UEFI ]; then echo $EFIPART " /boot ext4 noauto,noatime 0 2" >> /mnt/etc/fstab ; fi
+if [ $BOOTLOADER = UEFI ]; then echo $EFIPART " /boot ext4 noauto,noatime 0 2" >> /mnt/etc/fstab ; fi
 echo "tmpfs /tmp tmpfs defaults,nosuid,nodev 0 0" >> /mnt/etc/fstab
 
 # setting hostname
