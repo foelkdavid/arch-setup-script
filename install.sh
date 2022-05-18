@@ -89,7 +89,7 @@ driveselect() {
 # creates filesystem
 createfilesystem() {
     #creating efi, swap, root partition for UEFI systems; creating swap, root partition for BIOS systems
-    if [ $BOOTLOADER = UEFI ]; then printf "n\np\n \n \n+1G\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK; else printf "n\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK; fi
+    if [ $BOOTLOADER = UEFI ]; then printf "o\nn\np\n \n \n+1G\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK; else printf "o\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK; fi
     partprobe $DISK &&
     #getting paths of partitions
     PARTITION1=$(fdisk -l $DISK | grep $DISK | sed 1d | awk '{print $1}' | sed -n "1p") &&
@@ -110,15 +110,13 @@ createfilesystem() {
     #filesystem creation
     #efi partition
     if [ $BOOTLOADER = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
-    
-    
-    echo $ROOTPART
+
     
     #root partition
     mkfs.ext4 $ROOTPART &&
     
-    
     #swap partition
+    mkswap $SWAPPART &&
     swapon $SWAPPART
 }
 
