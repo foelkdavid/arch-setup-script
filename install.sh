@@ -1,5 +1,8 @@
 #!/bin/bash
 
+REPO="https://alpha.de.repo.voidlinux.org/current"
+ARCH="x86_64"
+
 # Adding colors for output:
 red="\e[0;91m"
 green="\e[0;92m"
@@ -123,19 +126,20 @@ createfilesystem() {
 
 
 
-echo -e "${bold}Starting Installer:${reset}"
+echo -e "${bold}Starting Installer:${reset}" ; sleep 0.4
 
 echo -e "\t${bold}Step 1 -> prerequisites:${reset}"
 printf "\t\tRun as root? "; rootcheck && ok || failexit ; sleep 0.4
 printf "\t\tChecking Connection: "; networkcheck && ok || failexit ; sleep 0.2
 printf "\t\tGetting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 1
 printf "\t\tRunning Updates: " ; xbps-install -Syu && ok || failexit
-printf "\t\tInstalling Parted for 'partprobe': " ; xbps-install -S parted && ok || failexit
+printf "\t\tInstalling Parted for 'partprobe': " ; xbps-install -Sy parted && ok || failexit
 printf "\n"
 
-echo -e "\t${bold}Step 2 -> drives:${reset}"
+
+echo -e "\t${bold}Step 2 -> drives:${reset}" ; sleep 0.4
 echo -e "\t\t${bold}Partitioning:${reset}"
-driveselect || exit ; sleep 1
+driveselect || exit ; sleep 0.4
 
 echo -e "\t\t${bold}Creating Filesystem:${reset}"
 getswap ; echo -e "\t\tSwapsize: ${blue}[$SWAP GB]${reset}"
@@ -144,3 +148,72 @@ createfilesystem && ok || failexit ; sleep 0.4
 echo -e "\t\t${bold}Mounting Filesystems:${reset}"
 mount $ROOTPART /mnt && swapon $SWAPPART &&
 if [ $BOOTMODE = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
+printf "\n"
+
+
+
+echo -e "\t${bold}Step 3 -> installation:${reset}" ; sleep 0.4
+# TODO: IMPLEMENT AUTOMATIC MIRRORSELECTION
+# FOR NOW JUST EDIT THE REPO VARIABLE ON LINE 3
+
+# copying rsa key from installation medium
+mkdir -p /mnt/var/db/xbps/keys
+cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
+
+# bootstrap installation with xbps-install
+XBPS_ARCH=$ARCH xbps-install -Sy -r /mnt -R "$REPO" base-system
+
+# mounting pseudo filesystem to chroot:
+mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
+mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
+mount --rbind /proc /mnt/proc && mount --make-rslave /mnt/proc
+
+# copying dns configuration:
+cp /etc/resolv.conf /mnt/etc/
+
+# configure locales:
+chroot /mnt/ xbps-reconfigure -f glibc-locales
+
+# configure users:
+chroot /mnt xbps-install -Sy sudo
+echo "creating new User" &&
+read -p "Please enter a valid username: " USRNME &&
+chroot /mnt useradd -m $USRNME &&
+chroot /mnt passwd $USRNME &&
+chroot /mnt usermod -a -G wheel $USRNME &&
+echo "locking root user" &&
+chroot /mnt passwd -l root &&
+echo "done" &&
+
+# configuring fstab
+echo $SWAPPART " swap swap rw,noatime,discard 0 0" >> /mnt/etc/fstab
+echo $ROOTPART " / ext4 noatime 0 1" >> /mnt/etc/fstab
+if [ $BOOTMODE = UEFI ]; then echo $EFIPART " /boot ext4 noauto,noatime 0 2" >> /mnt/etc/fstab ; fi
+echo "tmpfs /tmp tmpfs defaults,nosuid,nodev 0 0" >> /mnt/etc/fstab
+
+# setting hostname
+echo "setting hostname:" &&
+read -p "Please enter a valid Hostname : " CHN &&
+echo $CHN > /mnt/etc/hostname &&
+echo "done!" &&
+
+# setting up GRUB
+if [ $BOOTLOADER = UEFI ]; then
+    echo "setting up grub for UEFI system:" &&
+    chroot /mnt/ xbps-install -Sy grub-x86_64-efi
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Void"
+    echo "done";
+else
+    echo "setting up grub for BIOS system:" &&
+    chroot /mnt/ xbps-install -Sy grub
+    chroot /mnt/ grub-install $DISK
+    echo "done";
+fi
+
+# finalizing installation
+chroot /mnt/ xbps-reconfigure -fa
+
+echo -e "\t${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
+echo -e "\t${bold}enjoy your new system :)${reset}"
+printf "\n"
+echo "you can reboot now..."
