@@ -119,7 +119,7 @@ createfilesystem() {
     mkfs.ext4 $ROOTPART &&
     
     #swap partition
-    mkswap $SWAPPART &&
+    mkswap $SWAPPART
 }
 
 
