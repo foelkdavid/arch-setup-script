@@ -180,7 +180,6 @@ chroot /mnt/ xbps-reconfigure -f glibc-locales
 
 
 # configure users:
-chroot /mnt xbps-install -Sy sudo
 echo "creating new User" &&
 read -p "Please enter a valid username: " USRNME &&
 chroot /mnt/ useradd -m $USRNME &&
@@ -189,8 +188,8 @@ chroot /mnt/ usermod -a -G wheel $USRNME &&
 echo "locking root user" &&
 chroot /mnt/ passwd -l root &&
 echo "done" &&
-chroot /mnt/ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers &&
-chroot /mnt/ echo "%wheel ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown" >> /etc/sudoers &&
+echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers &&
+echo "%wheel ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown" >> /mnt/etc/sudoers &&
 
 
 # configuring fstab
@@ -239,5 +238,5 @@ echo -e "\t${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
 echo -e "\t${bold}enjoy your new system :)${reset}"
 printf "\n"
 echo "rebooting..."
-cp -r add-ons /home/$USRNME
+cp -r add-ons /mnt/home/$USRNME
 reboot now
