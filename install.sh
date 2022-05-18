@@ -173,7 +173,7 @@ cp /etc/resolv.conf /mnt/etc/
 
 # configure locales:
 while true; do
-    read -p "Please enter a valid Keymap : " KMP &&
+    read -p "Please enter a valid Keymap: " KMP &&
     chroot /mnt/ loadkeys $KMP && echo "KEYMAP="$KMP >> /mnt/etc/rc.conf && break ||  printf $(fail)" ${blue}$KMP${reset} is not a valid Keymap\n"
 done
 chroot /mnt/ xbps-reconfigure -f glibc-locales
@@ -233,6 +233,9 @@ fi
 
 # finalizing installation
 chroot /mnt/ xbps-reconfigure -fa
+
+# enabling networking (dhcpcd)
+chroot /mnt/ ln -s /etc/sv/dhcpcd /var/service/
 
 echo -e "\t${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
 echo -e "\t${bold}enjoy your new system :)${reset}"
