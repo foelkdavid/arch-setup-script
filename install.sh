@@ -94,7 +94,7 @@ driveselect() {
 # creates filesystem
 createfilesystem() {
     #creating efi, swap, root partition for UEFI systems; creating swap, root partition for BIOS systems
-    if [ $BOOTMODE = UEFI ]; then printf "o\nn\np\n \n \n+1G\nn\np\n \n \n+"$SWAPSIZE"G\nn\np\n \n \n \nw\n" | fdisk $DSK; else printf "o\nn\np\n \n \n+"$SWAPSIZE"G\nn\np\n \n \n \nw\n" | fdisk $DSK; fi
+    if [ $BOOTMODE = UEFI ]; then printf "n\np\n \n \n+1G\nn\np\n \n \n+"$SWAPSIZE"G\nn\np\n \n \n \nw\n" | fdisk $DSK; else printf "n\np\n \n \n+"$SWAPSIZE"G\nn\np\n \n \n \nw\n" | fdisk $DSK; fi
     partprobe $DSK &&
     #getting paths of partitions
     PARTITION1=$(fdisk -l $DSK | grep $DSK | sed 1d | awk '{print $1}' | sed -n "1p") &&
@@ -140,5 +140,7 @@ printf "\n"
 echo -e "\t${bold}Step 2 -> drives:${reset}"
 echo -e "\t\t${bold}Partitioning:${reset}"
 driveselect || exit ; sleep 1
+echo -e "\t\t${bold}Creating Filesystem:${reset}"
 getswap ; echo -e "\t\tSwapsize: ${blue}[$SWAP GB]${reset}"
 
+createfilesystem
