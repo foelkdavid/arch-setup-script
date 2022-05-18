@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Adding colors for output:
 red="\e[0;91m"
