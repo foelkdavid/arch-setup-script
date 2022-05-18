@@ -49,7 +49,7 @@ getbootloader() {
 # RAM = 2GB – 8GB : swap = RAM
 # RAM > 8GB       : swap = 8GB
 getswap() {
-RAM=$(grep MemTotal /proc/meminfo | awk '{print $2}') && RAM =$(( $RAM/1024000 ))
+    RAM=$(grep MemTotal /proc/meminfo | awk '{print $2}') && RAM =$(( $RAM/1024000 ))
     if [[ RAM -lt 2 ]]; then
         SWAP=$(($RAM*2))
         elif [[ RAM -lt 8 ]]; then
@@ -110,14 +110,13 @@ createfilesystem() {
     #filesystem creation
     #efi partition
     if [ $BOOTLOADER = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
-
+    
     
     #root partition
     mkfs.ext4 $ROOTPART &&
     
     #swap partition
     mkswap $SWAPPART &&
-    swapon $SWAPPART
 }
 
 
@@ -125,6 +124,7 @@ createfilesystem() {
 
 
 echo -e "${bold}Starting Installer:${reset}"
+
 echo -e "\t${bold}Step 1 -> prerequisites:${reset}"
 printf "\t\tRun as root? "; rootcheck && ok || failexit ; sleep 0.4
 printf "\t\tChecking Connection: "; networkcheck && ok || failexit ; sleep 0.2
@@ -132,10 +132,15 @@ printf "\t\tGetting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER
 printf "\t\tRunning Updates: " ; xbps-install -Syu && ok || failexit
 printf "\t\tInstalling Parted for 'partprobe': " ; xbps-install -S parted && ok || failexit
 printf "\n"
+
 echo -e "\t${bold}Step 2 -> drives:${reset}"
 echo -e "\t\t${bold}Partitioning:${reset}"
 driveselect || exit ; sleep 1
+
 echo -e "\t\t${bold}Creating Filesystem:${reset}"
 getswap ; echo -e "\t\tSwapsize: ${blue}[$SWAP GB]${reset}"
+createfilesystem && ok || failexit ; sleep 0.4
 
-createfilesystem
+echo -e "\t\t${bold}Mounting Filesystems:${reset}"
+mount $ROOTPART /mnt && swapon $SWAPPART &&
+if [ $BOOTMODE = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
