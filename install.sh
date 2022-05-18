@@ -89,12 +89,12 @@ driveselect() {
 # creates filesystem
 createfilesystem() {
     #creating efi, swap, root partition for UEFI systems; creating swap, root partition for BIOS systems
-    if [ $BOOTLOADER = UEFI ]; then printf "n\np\n \n \n+1G\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DSK; else printf "n\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DSK; fi
-    partprobe $DSK &&
+    if [ $BOOTLOADER = UEFI ]; then printf "n\np\n \n \n+1G\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK; else printf "n\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK; fi
+    partprobe $DISK &&
     #getting paths of partitions
-    PARTITION1=$(fdisk -l $DSK | grep $DSK | sed 1d | awk '{print $1}' | sed -n "1p") &&
-    PARTITION2=$(fdisk -l $DSK | grep $DSK | sed 1d | awk '{print $1}' | sed -n "2p") &&
-    if [ $BOOTLOADER = UEFI ]; then PARTITION3=$(fdisk -l $DSK | grep $DSK | sed 1d | awk '{print $1}' | sed -n "3p"); else echo "No third Partition needet."; fi
+    PARTITION1=$(fdisk -l $DISK | grep $DISK | sed 1d | awk '{print $1}' | sed -n "1p") &&
+    PARTITION2=$(fdisk -l $DISK | grep $DISK | sed 1d | awk '{print $1}' | sed -n "2p") &&
+    if [ $BOOTLOADER = UEFI ]; then PARTITION3=$(fdisk -l $DISK | grep $DISK | sed 1d | awk '{print $1}' | sed -n "3p"); else echo "No third Partition needet."; fi
     
     #declaring partition paths as variables
     if [ $BOOTLOADER = UEFI ]; then
