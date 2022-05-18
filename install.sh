@@ -131,6 +131,8 @@ echo -e "\t${bold}Step 1 -> prerequisites:${reset}"
 printf "\t\tRun as root? "; rootcheck && ok || failexit ; sleep 0.4
 printf "\t\tChecking Connection: "; networkcheck && ok || failexit ; sleep 0.2
 printf "\t\tGetting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 1
+printf "\t\tRunning Updates: " ; xbps-install -Syu && ok || failexit
+printf "\t\tInstalling Parted for 'partprobe': " ; xbps-install -S parted && ok || failexit
 printf "\n"
 echo -e "\t${bold}Step 2 -> drives:${reset}"
 echo -e "\t\t${bold}Partitioning:${reset}"
