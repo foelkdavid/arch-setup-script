@@ -45,10 +45,10 @@ echo "# convenience aliases:" >> $HOME/.config/zsh/.zshrc
 echo 'alias reboot="sudo reboot"' >> $HOME/.config/zsh/.zshrc
 echo 'alias poweroff="sudo poweroff"' >> $HOME/.config/zsh/.zshrc
 echo 'alias shutdown="sudo shutdown now"' >> $HOME/.config/zsh/.zshrc
-echo 'alias xi "sudo xbps-install"' >> $HOME/.config/zsh/.zshrc
-echo 'alias xr "sudo xbps-remove"' >> $HOME/.config/zsh/.zshrc
-echo 'alias xu "sudo xbps-install -Syu"' >> $HOME/.config/zsh/.zshrc
-echo 'alias xs "sudo xbps-query -Rs"' >> $HOME/.config/zsh/.zshrc
+echo 'alias xi="sudo xbps-install"' >> $HOME/.config/zsh/.zshrc
+echo 'alias xr="sudo xbps-remove"' >> $HOME/.config/zsh/.zshrc
+echo 'alias xu="sudo xbps-install -Syu"' >> $HOME/.config/zsh/.zshrc
+echo 'alias xs="sudo xbps-query -Rs"' >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
 echo "# auto cd into typed directory:" >> $HOME/.config/zsh/.zshrc
 echo "setopt autocd" >> $HOME/.config/zsh/.zshrc
