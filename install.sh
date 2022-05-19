@@ -174,7 +174,7 @@ configure() {
     clear
     echo -e "${bold}Step 4 -> configuration:${reset}"
     read -p "Please enter a valid Hostname : " CHN &&
-    echo $CHN > /mnt/etc/hostname &&
+    echo $CHN > /mnt/etc/hostname
 }
 
 finalize() {
