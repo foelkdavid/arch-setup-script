@@ -34,7 +34,7 @@ rootcheck() {
 
 # naive networkcheck
 networkcheck() {
-    ping -c 2 voidlinux.org > /dev/null && return 0 || return 1
+    ping -c 2 voidlinux.org > /dev/tty3 && return 0 || return 1
 }
 
 # gets the used BOOTLOADER.
@@ -66,8 +66,8 @@ preparation() {
     printf "Run as root? "; rootcheck && ok || failexit ; sleep 0.4
     printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.4
     printf "Getting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 0.4
-    printf "Running Updates: ... " ; xbps-install -Syu > /dev/null && ok || failexit ; sleep 0.4
-    printf "Installing Parted for 'partprobe': ... " ; xbps-install -Sy parted > /dev/null && ok || failexit ; sleep 1.2
+    printf "Running Updates: ... " ; xbps-install -Syu > /dev/tty3 && ok || failexit ; sleep 0.4
+    printf "Installing Parted for 'partprobe': ... " ; xbps-install -Sy parted > /dev/tty3 && ok || failexit ; sleep 1.2
     printf "\n"
 }
 
@@ -100,7 +100,7 @@ driveselect() {
 # creates filesystem
 createfilesystem() {
     #creating efi, swap, root partition for UEFI systems; creating swap, root partition for BIOS systems
-    if [ $BOOTLOADER = UEFI ]; then printf "o\nn\np\n \n \n+1G\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK > /dev/null ; else printf "o\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK > /dev/null; fi
+    if [ $BOOTLOADER = UEFI ]; then printf "o\nn\np\n \n \n+1G\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK > /dev/tty3 ; else printf "o\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK > /dev/tty3; fi
     partprobe $DISK &&
     #getting paths of partitions
     PARTITION1=$(fdisk -l $DISK | grep $DISK | sed 1d | awk '{print $1}' | sed -n "1p") &&
@@ -120,14 +120,14 @@ createfilesystem() {
     
     #filesystem creation
     #efi partition
-    if [ $BOOTLOADER = UEFI ]; then mkfs.fat -F32 $EFIPART > /dev/null; fi
+    if [ $BOOTLOADER = UEFI ]; then mkfs.fat -F32 $EFIPART > /dev/tty3; fi
     
     
     #root partition
-    mkfs.ext4 $ROOTPART > /dev/null &&
+    mkfs.ext4 $ROOTPART > /dev/tty3 &&
     
     #swap partition
-    mkswap $SWAPPART > /dev/null
+    mkswap $SWAPPART > /dev/tty3
 }
 
 # system installation
@@ -140,7 +140,7 @@ sysinstall() {
     cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
     
     # bootstrap installation with xbps-install
-    XBPS_ARCH=$ARCH xbps-install -Sy -r /mnt -R "$REPO" base-system > /dev/null
+    XBPS_ARCH=$ARCH xbps-install -Sy -r /mnt -R "$REPO" base-system > /dev/tty3
     
     # mounting pseudo filesystem to chroot:
     mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
