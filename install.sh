@@ -52,7 +52,7 @@ getbootloader() {
 # RAM = 2GB – 8GB : swap = RAM
 # RAM > 8GB       : swap = 8GB
 getswap() {
-    RAM=$(grep MemTotal /proc/meminfo | awk '{print $2}') && RAM =$(( $RAM/1024000 ))
+    RAM=$(grep MemTotal /proc/meminfo | awk '{print $2}') && RAM=$(( $RAM/1024000 ))
     if [[ RAM -lt 2 ]]; then
         SWAP=$(($RAM*2))
         elif [[ RAM -lt 8 ]]; then
