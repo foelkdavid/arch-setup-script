@@ -29,12 +29,14 @@ rm -rf $HOME/.bash*
 
 # .zshenv for environment variables
 touch $HOME/.config/zsh/.zshenv
+echo "# USE THIS FILE FOR YOUR ENVIRONMENT VARIABLES" >> $HOME/.config/zsh/.zshenv
 echo 'export XDG_CONFIG_HOME="$HOME/.config"' >> $HOME/.config/zsh/.zshenv
 mkdir -p $HOME/.cache/zsh
 echo 'export XDG_CACHE_DIR="$HOME/.cache"' >> $HOME/.config/zsh/.zshenv
 
 
 # .zprofile for autorunning commands on login
+echo "# USE THIS FILE TO AUTORUN COMMANDS ON LOGIN" >> $HOME/.config/zsh/.zprofile
 touch $HOME/.config/zsh/.zprofile
 
 # .zshrc for configuration and commands
@@ -64,14 +66,14 @@ echo "# disable ctrl-s to freeze terminal" >> $HOME/.config/zsh/.zshrc
 echo "stty stop undef" >> $HOME/.config/zsh/.zshrc
 echo "# move .zcompdump directory" >> $HOME/.config/zsh/.zshrc
 echo "autoload -Uz compinit" >> $HOME/.config/zsh/.zshrc
-echo 'compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION' >> $HOME/.config/zsh/.zshrc
+echo 'compinit -d $HOME/.cache/zsh/zcompdump-$ZSH_VERSION' >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
 echo "# add ctrl+a and ctrl+e support" >> $HOME/.config/zsh/.zshrc
 echo "bindkey -M viins '^a' beginning-of-line" >> $HOME/.config/zsh/.zshrc
 echo "bindkey -M viins '^e' end-of-line" >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
 echo "# configure shell history" >> $HOME/.config/zsh/.zshrc
-echo "HISTFILE=$HOME/.cache/zsh/histfile.txt" >> $HOME/.config/zsh/.zshrc
+echo 'HISTFILE=$HOME/.cache/zsh/histfile.txt' >> $HOME/.config/zsh/.zshrc
 echo "HISTSIZE=10000" >> $HOME/.config/zsh/.zshrc
 echo "SAVEHIST=10000" >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
@@ -79,8 +81,8 @@ echo "# import plugins" >> $HOME/.config/zsh/.zshrc
 mkdir -p $HOME/.local/share/zsh/plugins/
 git clone --depth 1 -- https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting
 git clone --depth 1 -- https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.local/share/zsh/plugins/zsh-autosuggestions
-echo "source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> $HOME/.config/zsh/.zshrc
-echo "source $HOME/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> $HOME/.config/zsh/.zshrc
+echo 'source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh' >> $HOME/.config/zsh/.zshrc
+echo 'source $HOME/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh' >> $HOME/.config/zsh/.zshrc
 sudo xbps-install -Sy zsh
 ZVER=$(zsh --version | awk '{print $2}')
 sudo rm /usr/lib/zsh/$ZVER/zsh/newuser.so
