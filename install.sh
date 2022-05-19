@@ -140,7 +140,7 @@ sysinstall() {
     cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
     
     # bootstrap installation with xbps-install
-    XBPS_ARCH=$ARCH xbps-install -Sy -r /mnt -R "$REPO" base-system
+    XBPS_ARCH=$ARCH xbps-install -Sy -r /mnt -R "$REPO" base-system > /dev/null
     
     # mounting pseudo filesystem to chroot:
     mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
@@ -172,9 +172,16 @@ configure() {
     clear
     echo -e "${bold}Step 4 -> configuration: [2/3]${reset}"
     echo -e "${blue}Keymap:$KMP${reset}"
-    read -p "Please enter a valid Username: " USRNME &&
-    chroot /mnt/ useradd -m $USRNME &&
-    chroot /mnt/ passwd $USRNME &&
+    
+    while true; do
+        read -p "Please enter a valid Username: " USRNME &&
+        chroot /mnt/ useradd -m $USRNME && break ||  printf $(fail)"\n"
+    done
+    while true; do
+        read -p "Please enter a valid Username: " USRNME &&
+        chroot /mnt/ passwd $USRNME && break ||  printf $(fail)"\n"
+    done
+    
     chroot /mnt/ usermod -a -G wheel $USRNME &&
     #echo "locking root user" &&
     chroot /mnt/ passwd -l root &&
