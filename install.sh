@@ -63,7 +63,7 @@ getswap() {
 # lets the user select the system drive
 driveselect() {
     # shows drives over 1GiB to the User
-    echo -e "\t\tFollowing disks are recommendet:"
+    echo -e "Following disks are recommendet:"
     echo -e "${bold}"
     sfdisk -l | grep "GiB" &&
     echo -e "${reset}"
@@ -77,7 +77,7 @@ driveselect() {
     echo -e "${red}This will remove all existing partitions on "$DISK". ${reset}"
     while true; do
         read -p "Are you sure? [yes/no] " YN
-        printf "\t\tdrive selection: "
+        printf "drive selection: "
         case $YN in
             [yes]* ) ok && return 0;;
             [no]* ) fail && return 1;;
@@ -211,8 +211,8 @@ finalize() {
 
 
     clear
-    echo -e "\t${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
-    echo -e "\t${bold}enjoy your new system :)${reset}"
+    echo -e "${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
+    echo -e "${bold}enjoy your new system :)${reset}"
     printf "\n"
     cp -r add-ons /mnt/home/$USRNME
     echo "rebooting..." ; sleep 1
@@ -221,29 +221,29 @@ finalize() {
 
 # STEP 1 -> PREREQUISITES
 echo -e "${bold}Starting Installer:${reset}" ; sleep 0.4
-echo -e "\t${bold}Step 1 -> prerequisites:${reset}"
-printf "\t\tRun as root? "; rootcheck && ok || failexit ; sleep 0.4
-printf "\t\tChecking Connection: "; networkcheck && ok || failexit ; sleep 0.2
-printf "\t\tGetting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 1
-printf "\t\tRunning Updates: " ; xbps-install -Syu && ok || failexit
-printf "\t\tInstalling Parted for 'partprobe': " ; xbps-install -Sy parted && ok || failexit
+echo -e "${bold}Step 1 -> prerequisites:${reset}"
+printf "Run as root? "; rootcheck && ok || failexit ; sleep 0.4
+printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.2
+printf "Getting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 1
+printf "Running Updates: " ; xbps-install -Syu && ok || failexit
+printf "Installing Parted for 'partprobe': " ; xbps-install -Sy parted && ok || failexit
 printf "\n"
 
 
 # STEP 2 -> DRIVES
-echo -e "\t${bold}Step 2 -> drives:${reset}" ; sleep 0.4
-echo -e "\t\t${bold}Partitioning:${reset}"
+echo -e "${bold}Step 2 -> drives:${reset}" ; sleep 0.4
+echo -e "${bold}Partitioning:${reset}"
 driveselect || exit ; sleep 0.4
-echo -e "\t\t${bold}Creating Filesystem:${reset}"
-getswap ; echo -e "\t\tSwapsize: ${blue}[$SWAP GB]${reset}"
+echo -e "${bold}Creating Filesystem:${reset}"
+getswap ; echo -e "Swapsize: ${blue}[$SWAP GB]${reset}"
 createfilesystem && ok || failexit ; sleep 0.4
-echo -e "\t\t${bold}Mounting Filesystems:${reset}"
+echo -e "${bold}Mounting Filesystems:${reset}"
 mount $ROOTPART /mnt && swapon $SWAPPART &&
 if [ $BOOTMODE = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
 
 
 # STEP 3 -> INSTALLATION
-echo -e "\n\t${bold}Step 3 -> installation:${reset}" ; sleep 0.4
+echo -e "\n${bold}Step 3 -> installation:${reset}" ; sleep 0.4
 sysinstall
 
 # STEP 4 -> CONFIGURATION
@@ -252,7 +252,7 @@ echo -e "${bold}Step 4 -> configuration:${reset}" ; sleep 0.4
 configure
 
 # STEP5 -> FINALIZE
-echo -e "\n\t${bold}Step 5 -> finalize:${reset}" ; sleep 0.4
+echo -e "\n${bold}Step 5 -> finalize:${reset}" ; sleep 0.4
 finalize
 
 # REBOOT
