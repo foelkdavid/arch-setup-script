@@ -149,29 +149,32 @@ sysinstall() {
 
 configure() {
     # configure locales:
+    clear
+    echo -e "${bold}Step 4 -> configuration:${reset}"
     while true; do
         read -p "Please enter a valid Keymap: " KMP &&
         chroot /mnt/ loadkeys $KMP && echo "KEYMAP="$KMP >> /mnt/etc/rc.conf && break ||  printf $(fail)" ${blue}$KMP${reset} is not a valid Keymap\n"
     done
     chroot /mnt/ xbps-reconfigure -f glibc-locales
-    
+
     # configure users:
-    echo "creating new User" &&
+    clear
+    echo -e "${bold}Step 4 -> configuration:${reset}"
     read -p "Please enter a valid username: " USRNME &&
     chroot /mnt/ useradd -m $USRNME &&
     chroot /mnt/ passwd $USRNME &&
     chroot /mnt/ usermod -a -G wheel $USRNME &&
-    echo "locking root user" &&
+    #echo "locking root user" &&
     chroot /mnt/ passwd -l root &&
-    echo "done" &&
+    #echo "done" &&
     echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers &&
     echo "%wheel ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown" >> /mnt/etc/sudoers &&
-    
-    # setting hostname
-    echo "setting hostname:" &&
+
+    # setting 
+    clear
+    echo -e "${bold}Step 4 -> configuration:${reset}"
     read -p "Please enter a valid Hostname : " CHN &&
     echo $CHN > /mnt/etc/hostname &&
-    echo "done!"
 }
 
 finalize() {
@@ -205,13 +208,14 @@ finalize() {
     
     # enabling networking (dhcpcd)
     chroot /mnt/ ln -s /etc/sv/dhcpcd /var/service/
-    
+
+
+    clear
     echo -e "\t${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
     echo -e "\t${bold}enjoy your new system :)${reset}"
     printf "\n"
-    echo "rebooting..."
     cp -r add-ons /mnt/home/$USRNME
-
+    echo "rebooting..." ; sleep 1
 }
 
 
@@ -243,7 +247,8 @@ echo -e "\n\t${bold}Step 3 -> installation:${reset}" ; sleep 0.4
 sysinstall
 
 # STEP 4 -> CONFIGURATION
-echo -e "\n\t${bold}Step 4 -> configuration:${reset}" ; sleep 0.4
+clear
+echo -e "${bold}Step 4 -> configuration:${reset}" ; sleep 0.4
 configure
 
 # STEP5 -> FINALIZE
