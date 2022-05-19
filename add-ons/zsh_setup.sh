@@ -58,3 +58,5 @@ setup() {
     echo "source $HOME/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> $HOME/.config/zsh/.zshrc
     chsh -s /bin/zsh $USER
 }
+
+setup
