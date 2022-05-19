@@ -16,6 +16,8 @@ printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.4
 
 # setting up zsh
 # preparation
+xbps-install -Syu
+xbps-install -Sy git
 rm -rf /etc/profile.d/bash.sh
 rm -rf $HOME/.bash*
 touch /etc/profile.d/zsh.sh
