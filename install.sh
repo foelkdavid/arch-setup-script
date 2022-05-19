@@ -25,7 +25,6 @@ ok() {
     echo -e "${green}[OK]${reset}"
 }
 
-
 # Functions to be used later:
 
 # checks if command is run as root.
@@ -45,7 +44,6 @@ getbootloader() {
     [ -d /sys/firmware/efi/efivars ] && BOOTLOADER=UEFI || BOOTLOADER=BIOS
 }
 
-
 # calculates swapsize using a simple table
 #     Amount of RAM installed in system 	Recommended swap space
 # RAM ≤ 2GB :       swap = 2X RAM
@@ -62,8 +60,7 @@ getswap() {
     fi
 }
 
-
-
+# lets the user select the system drive
 driveselect() {
     # shows drives over 1GiB to the User
     echo -e "\t\tFollowing disks are recommendet:"
@@ -122,12 +119,104 @@ createfilesystem() {
     mkswap $SWAPPART
 }
 
+# system installation
+sysinstall() {
+    # TODO: IMPLEMENT AUTOMATIC MIRRORSELECTION
+    # FOR NOW JUST EDIT THE REPO VARIABLE ON LINE 3
+    
+    # copying rsa key from installation medium
+    mkdir -p /mnt/var/db/xbps/keys
+    cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
+    
+    # bootstrap installation with xbps-install
+    XBPS_ARCH=$ARCH xbps-install -Sy -r /mnt -R "$REPO" base-system
+    
+    # mounting pseudo filesystem to chroot:
+    mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
+    mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
+    mount --rbind /proc /mnt/proc && mount --make-rslave /mnt/proc
+    
+    # copying dns configuration:
+    cp /etc/resolv.conf /mnt/etc/
+    
+    # configuring fstab
+    echo $SWAPPART " swap swap rw,noatime,discard 0 0" >> /mnt/etc/fstab
+    echo $ROOTPART " / ext4 noatime 0 1" >> /mnt/etc/fstab
+    if [ $BOOTLOADER = UEFI ]; then echo $EFIPART " /boot ext4 noauto,noatime 0 2" >> /mnt/etc/fstab ; fi
+    echo "tmpfs /tmp tmpfs defaults,nosuid,nodev 0 0" >> /mnt/etc/fstab
+    
+}
+
+configure() {
+    # configure locales:
+    while true; do
+        read -p "Please enter a valid Keymap: " KMP &&
+        chroot /mnt/ loadkeys $KMP && echo "KEYMAP="$KMP >> /mnt/etc/rc.conf && break ||  printf $(fail)" ${blue}$KMP${reset} is not a valid Keymap\n"
+    done
+    chroot /mnt/ xbps-reconfigure -f glibc-locales
+    
+    # configure users:
+    echo "creating new User" &&
+    read -p "Please enter a valid username: " USRNME &&
+    chroot /mnt/ useradd -m $USRNME &&
+    chroot /mnt/ passwd $USRNME &&
+    chroot /mnt/ usermod -a -G wheel $USRNME &&
+    echo "locking root user" &&
+    chroot /mnt/ passwd -l root &&
+    echo "done" &&
+    echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers &&
+    echo "%wheel ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown" >> /mnt/etc/sudoers &&
+    
+    # setting hostname
+    echo "setting hostname:" &&
+    read -p "Please enter a valid Hostname : " CHN &&
+    echo $CHN > /mnt/etc/hostname &&
+    echo "done!" &&
+}
+
+finalize() {
+    # setting up GRUB
+    if [ $BOOTLOADER = UEFI ]; then
+        echo "setting up grub for UEFI system:" &&
+        chroot /mnt/ xbps-install -Sy grub-x86_64-efi
+        grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Void"
+        echo "done";
+    else
+        echo "setting up grub for BIOS system:" &&
+        chroot /mnt/ xbps-install -Sy grub
+        chroot /mnt/ grub-install $DISK
+        echo "done";
+    fi
+    
+    # installing microcode
+    VENDOR=$(grep vendor_id /proc/cpuinfo | head -n 1 | awk '{print $3}')
+    if [ $VENDOR = AuthenticAMD ]; then
+        echo "detected AMD CPU"
+        chroot /mnt/ xbps-install -Sy linux-firmware-amd
+        elif [ $VENDOR = GenuineIntel ]; then
+        echo "detected Intel CPU"
+        # TODO: INSTALL INTEL DRIVERS
+    fi
+    
+    
+    
+    # finalizing installation
+    chroot /mnt/ xbps-reconfigure -fa
+    
+    # enabling networking (dhcpcd)
+    chroot /mnt/ ln -s /etc/sv/dhcpcd /var/service/
+    
+    echo -e "\t${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
+    echo -e "\t${bold}enjoy your new system :)${reset}"
+    printf "\n"
+    echo "rebooting..."
+    cp -r add-ons /mnt/home/$USRNME
+
+}
 
 
-
-
+# STEP 1 -> PREREQUISITES
 echo -e "${bold}Starting Installer:${reset}" ; sleep 0.4
-
 echo -e "\t${bold}Step 1 -> prerequisites:${reset}"
 printf "\t\tRun as root? "; rootcheck && ok || failexit ; sleep 0.4
 printf "\t\tChecking Connection: "; networkcheck && ok || failexit ; sleep 0.2
@@ -137,109 +226,29 @@ printf "\t\tInstalling Parted for 'partprobe': " ; xbps-install -Sy parted && ok
 printf "\n"
 
 
+# STEP 2 -> DRIVES
 echo -e "\t${bold}Step 2 -> drives:${reset}" ; sleep 0.4
 echo -e "\t\t${bold}Partitioning:${reset}"
 driveselect || exit ; sleep 0.4
-
 echo -e "\t\t${bold}Creating Filesystem:${reset}"
 getswap ; echo -e "\t\tSwapsize: ${blue}[$SWAP GB]${reset}"
 createfilesystem && ok || failexit ; sleep 0.4
-
 echo -e "\t\t${bold}Mounting Filesystems:${reset}"
 mount $ROOTPART /mnt && swapon $SWAPPART &&
 if [ $BOOTMODE = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
-printf "\n"
 
 
+# STEP 3 -> INSTALLATION
+echo -e "\n\t${bold}Step 3 -> installation:${reset}" ; sleep 0.4
+sysinstall
 
-echo -e "\t${bold}Step 3 -> installation:${reset}" ; sleep 0.4
-# TODO: IMPLEMENT AUTOMATIC MIRRORSELECTION
-# FOR NOW JUST EDIT THE REPO VARIABLE ON LINE 3
+# STEP 4 -> CONFIGURATION
+echo -e "\n\t${bold}Step 4 -> configuration:${reset}" ; sleep 0.4
+configure
 
-# copying rsa key from installation medium
-mkdir -p /mnt/var/db/xbps/keys
-cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
+# STEP5 -> FINALIZE
+echo -e "\n\t${bold}Step 5 -> finalize:${reset}" ; sleep 0.4
+finalize
 
-# bootstrap installation with xbps-install
-XBPS_ARCH=$ARCH xbps-install -Sy -r /mnt -R "$REPO" base-system
-
-# mounting pseudo filesystem to chroot:
-mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
-mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
-mount --rbind /proc /mnt/proc && mount --make-rslave /mnt/proc
-
-# copying dns configuration:
-cp /etc/resolv.conf /mnt/etc/
-
-# configure locales:
-while true; do
-    read -p "Please enter a valid Keymap: " KMP &&
-    chroot /mnt/ loadkeys $KMP && echo "KEYMAP="$KMP >> /mnt/etc/rc.conf && break ||  printf $(fail)" ${blue}$KMP${reset} is not a valid Keymap\n"
-done
-chroot /mnt/ xbps-reconfigure -f glibc-locales
-
-
-# configure users:
-echo "creating new User" &&
-read -p "Please enter a valid username: " USRNME &&
-chroot /mnt/ useradd -m $USRNME &&
-chroot /mnt/ passwd $USRNME &&
-chroot /mnt/ usermod -a -G wheel $USRNME &&
-echo "locking root user" &&
-chroot /mnt/ passwd -l root &&
-echo "done" &&
-echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers &&
-echo "%wheel ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown" >> /mnt/etc/sudoers &&
-
-
-# configuring fstab
-echo $SWAPPART " swap swap rw,noatime,discard 0 0" >> /mnt/etc/fstab
-echo $ROOTPART " / ext4 noatime 0 1" >> /mnt/etc/fstab
-if [ $BOOTLOADER = UEFI ]; then echo $EFIPART " /boot ext4 noauto,noatime 0 2" >> /mnt/etc/fstab ; fi
-echo "tmpfs /tmp tmpfs defaults,nosuid,nodev 0 0" >> /mnt/etc/fstab
-
-# setting hostname
-echo "setting hostname:" &&
-read -p "Please enter a valid Hostname : " CHN &&
-echo $CHN > /mnt/etc/hostname &&
-echo "done!" &&
-
-# setting up GRUB
-if [ $BOOTLOADER = UEFI ]; then
-    echo "setting up grub for UEFI system:" &&
-    chroot /mnt/ xbps-install -Sy grub-x86_64-efi
-    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Void"
-    echo "done";
-else
-    echo "setting up grub for BIOS system:" &&
-    chroot /mnt/ xbps-install -Sy grub
-    chroot /mnt/ grub-install $DISK
-    echo "done";
-fi
-
-
-
-# installing microcode
-VENDOR=$(grep vendor_id /proc/cpuinfo | head -n 1 | awk '{print $3}')
-if [ $VENDOR = AuthenticAMD ]; then
-    echo "detected AMD CPU"
-    chroot /mnt/ xbps-install -Sy linux-firmware-amd
-    elif [ $VENDOR = GenuineIntel ]; then
-    echo "detected Intel CPU"
-    # TODO: INSTALL INTEL DRIVERS
-fi
-
-
-
-# finalizing installation
-chroot /mnt/ xbps-reconfigure -fa
-
-# enabling networking (dhcpcd)
-chroot /mnt/ ln -s /etc/sv/dhcpcd /var/service/
-
-echo -e "\t${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
-echo -e "\t${bold}enjoy your new system :)${reset}"
-printf "\n"
-echo "rebooting..."
-cp -r add-ons /mnt/home/$USRNME
+# REBOOT
 reboot now
