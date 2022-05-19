@@ -62,14 +62,13 @@ getswap() {
 
 
 preparation() {
-
-echo -e "${bold}Step 1 -> prerequisites:${reset}"
-printf "Run as root? "; rootcheck && ok || failexit ; sleep 0.4
-printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.2
-printf "Getting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 1
-printf "Running Updates: ... " ; xbps-install -Syu > /dev/null && ok || failexit
-printf "Installing Parted for 'partprobe': ... " ; xbps-install -Sy parted > /dev/null && ok || failexit
-printf "\n"
+    echo -e "${bold}Step 1 -> prerequisites:${reset}"
+    printf "Run as root? "; rootcheck && ok || failexit ; sleep 0.4
+    printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.2
+    printf "Getting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 1
+    printf "Running Updates: ... " ; xbps-install -Syu > /dev/null && ok || failexit
+    printf "Installing Parted for 'partprobe': ... " ; xbps-install -Sy parted > /dev/null && ok || failexit
+    printf "\n"
 }
 
 # lets the user select the system drive
@@ -168,7 +167,7 @@ configure() {
         chroot /mnt/ loadkeys $KMP && echo "KEYMAP="$KMP >> /mnt/etc/rc.conf && break ||  printf $(fail)" ${blue}$KMP${reset} is not a valid Keymap\n"
     done
     chroot /mnt/ xbps-reconfigure -f glibc-locales
-
+    
     # configure users:
     clear
     echo -e "${bold}Step 4 -> configuration:${reset}"
@@ -181,8 +180,8 @@ configure() {
     #echo "done" &&
     echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers &&
     echo "%wheel ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown" >> /mnt/etc/sudoers &&
-
-    # setting 
+    
+    # setting
     clear
     echo -e "${bold}Step 4 -> configuration:${reset}"
     read -p "Please enter a valid Hostname : " CHN &&
@@ -220,8 +219,8 @@ finalize() {
     
     # enabling networking (dhcpcd)
     chroot /mnt/ ln -s /etc/sv/dhcpcd /var/service/
-
-
+    
+    
     clear
     echo -e "${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
     echo -e "${bold}enjoy your new system :)${reset}"
@@ -236,6 +235,7 @@ echo -e "${bold}Starting Installer:${reset}" ; sleep 0.4
 preparation
 
 # STEP 2 -> DRIVES
+clear
 echo -e "${bold}Step 2 -> drives:${reset}" ; sleep 0.4
 echo -e "${bold}Partitioning:${reset}"
 driveselect || exit ; sleep 0.4
