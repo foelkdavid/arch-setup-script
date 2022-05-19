@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 rootcheck() {
     [ $(id -u) -eq 0 ] && return 0 || return 1
@@ -22,7 +22,7 @@ rm -rf /etc/profile.d/bash.sh
 rm -rf $HOME/.bash*
 touch /etc/profile.d/zsh.sh
 echo 'export ZDOTDIR="$HOME/.config/zsh"' >> /etc/profile.d/zsh.sh
-mkdir -p $HOME.config/zsh
+mkdir -p $HOME/.config/zsh
 
 
 # .zshenv for environment variables
