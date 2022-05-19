@@ -256,4 +256,4 @@ echo -e "\n${bold}Step 5 -> finalize:${reset}" ; sleep 0.4
 finalize
 
 # REBOOT
-reboot now
+#reboot now
