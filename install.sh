@@ -60,6 +60,18 @@ getswap() {
     fi
 }
 
+
+preparation() {
+
+echo -e "${bold}Step 1 -> prerequisites:${reset}"
+printf "Run as root? "; rootcheck && ok || failexit ; sleep 0.4
+printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.2
+printf "Getting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 1
+printf "Running Updates: ... " ; xbps-install -Syu > /dev/null && ok || failexit
+printf "Installing Parted for 'partprobe': ... " ; xbps-install -Sy parted > /dev/null && ok || failexit
+printf "\n"
+}
+
 # lets the user select the system drive
 driveselect() {
     # shows drives over 1GiB to the User
@@ -221,14 +233,7 @@ finalize() {
 
 # STEP 1 -> PREREQUISITES
 echo -e "${bold}Starting Installer:${reset}" ; sleep 0.4
-echo -e "${bold}Step 1 -> prerequisites:${reset}"
-printf "Run as root? "; rootcheck && ok || failexit ; sleep 0.4
-printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.2
-printf "Getting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 1
-printf "Running Updates: " ; xbps-install -Syu && ok || failexit
-printf "Installing Parted for 'partprobe': " ; xbps-install -Sy parted && ok || failexit
-printf "\n"
-
+preparation
 
 # STEP 2 -> DRIVES
 echo -e "${bold}Step 2 -> drives:${reset}" ; sleep 0.4
@@ -247,8 +252,6 @@ echo -e "\n${bold}Step 3 -> installation:${reset}" ; sleep 0.4
 sysinstall
 
 # STEP 4 -> CONFIGURATION
-clear
-echo -e "${bold}Step 4 -> configuration:${reset}" ; sleep 0.4
 configure
 
 # STEP5 -> FINALIZE
