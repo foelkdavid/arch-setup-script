@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 rootcheck() {
     [ $(id -u) -eq 0 ] && return 0 || return 1
@@ -10,8 +10,8 @@ networkcheck() {
 }
 
 echo -e "${bold}Setting up zsh:${reset}"
-printf "Run as root? "; rootcheck && ok || failexit ; sleep 0.4
-printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.4
+printf "Run as root? "; rootcheck && echo [ok] || exit ; sleep 0.4
+printf "Checking Connection: "; networkcheck && echo [ok] || exit ; sleep 0.4
 
 
 # setting up zsh
