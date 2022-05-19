@@ -244,7 +244,7 @@ finalize() {
     chroot /mnt/ xbps-reconfigure -fa
     
     # enabling networking (dhcpcd)
-    chroot /mnt/ ln -s /etc/sv/dhcpcd /var/service/
+    #chroot /mnt/ ln -s /etc/sv/dhcpcd /var/service/
     
     
     clear
