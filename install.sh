@@ -204,7 +204,7 @@ configure() {
     echo -e "${blue}Username:$USRNME${reset}"
     echo -e "${blue}Hostname:$CHN${reset}"
     echo -e "${blue}-----------------------${reset}"
-    for i in {1..10}   # you can also use {0..9}
+    for i in {0..22}
     do
         printf "."
         sleep 0.1
@@ -284,4 +284,4 @@ echo -e "\n${bold}Step 5 -> finalize:${reset}" ; sleep 0.4
 finalize
 
 # REBOOT
-reboot now
+#reboot now
