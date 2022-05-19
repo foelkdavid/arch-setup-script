@@ -82,6 +82,7 @@ git clone --depth 1 -- https://github.com/zsh-users/zsh-autosuggestions.git $HOM
 echo "source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> $HOME/.config/zsh/.zshrc
 echo "source $HOME/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> $HOME/.config/zsh/.zshrc
 sudo xbps-install -Sy zsh
-sudo rm /usr/lib/zsh/$ZSH_VERSION/zsh/newuser.so
+ZVER=$(zsh --version | awk '{print $2}')
+sudo rm /usr/lib/zsh/$ZVER/zsh/newuser.so
 chsh -s /bin/zsh $USER
 echo "DONE!"
