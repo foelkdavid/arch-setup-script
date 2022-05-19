@@ -20,8 +20,8 @@ sudo xbps-install -Syu
 sudo xbps-install -Sy git
 sudo rm -rf /etc/profile.d/bash.sh
 
-sudo touch /tmp/zsh.sh
-sudo echo 'export ZDOTDIR="$HOME/.config/zsh"' >> /tmp/zsh.sh
+touch /tmp/zsh.sh
+echo 'export ZDOTDIR="$HOME/.config/zsh"' >> /tmp/zsh.sh
 sudo mv /tmp/zsh.sh /etc/profile.d/
 mkdir -p $HOME/.config/zsh
 rm -rf $HOME/.bash*
