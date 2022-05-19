@@ -270,7 +270,7 @@ getswap ; echo -e "Swapsize: ${blue}[$SWAP GB]${reset}"
 createfilesystem && ok || failexit ; sleep 0.4
 echo -e "${bold}Mounting Filesystems:${reset}"
 mount $ROOTPART /mnt && swapon $SWAPPART &&
-if [ $BOOTMODE = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
+if [ $BOOTLOADER = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
 
 
 # STEP 3 -> INSTALLATION
