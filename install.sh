@@ -173,12 +173,12 @@ configure() {
     echo -e "${bold}Step 4 -> configuration: [2/3]${reset}"
     echo -e "${blue}Keymap:$KMP${reset}"
     
+    
     while true; do
         read -p "Please enter a valid Username: " USRNME &&
         chroot /mnt/ useradd -m $USRNME && break ||  printf $(fail)"\n"
     done
     while true; do
-        read -p "Please enter a valid Username: " USRNME &&
         chroot /mnt/ passwd $USRNME && break ||  printf $(fail)"\n"
     done
     
@@ -269,6 +269,8 @@ if [ $BOOTMODE = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
 
 # STEP 3 -> INSTALLATION
 echo -e "\n${bold}Step 3 -> installation:${reset}" ; sleep 0.4
+echo -e "\n${bold}THIS CAN TAKE A WHILE...${reset}" ; sleep 0.4
+echo -e "\n${bold}If you are curious, enter TTY3${reset}" ; sleep 0.4
 sysinstall
 
 # STEP 4 -> CONFIGURATION
