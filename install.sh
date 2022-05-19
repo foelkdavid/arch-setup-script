@@ -171,7 +171,7 @@ configure() {
     echo "setting hostname:" &&
     read -p "Please enter a valid Hostname : " CHN &&
     echo $CHN > /mnt/etc/hostname &&
-    echo "done!" &&
+    echo "done!"
 }
 
 finalize() {
