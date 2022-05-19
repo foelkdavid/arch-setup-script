@@ -67,7 +67,7 @@ preparation() {
     printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.4
     printf "Getting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 0.4
     printf "Running Updates: ... " ; xbps-install -Syu > /dev/null && ok || failexit ; sleep 0.4
-    printf "Installing Parted for 'partprobe': ... " ; xbps-install -Sy parted > /dev/null && ok || failexit ; sleep 0.4
+    printf "Installing Parted for 'partprobe': ... " ; xbps-install -Sy parted > /dev/null && ok || failexit ; sleep 1.2
     printf "\n"
 }
 
