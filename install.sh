@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: FIX DHCPCD
+
 REPO="https://alpha.de.repo.voidlinux.org/current"
 ARCH="x86_64"
 
@@ -285,3 +287,5 @@ finalize
 
 # REBOOT
 #reboot now
+
+
