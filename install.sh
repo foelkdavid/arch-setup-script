@@ -64,10 +64,10 @@ getswap() {
 preparation() {
     echo -e "${bold}Step 1 -> prerequisites:${reset}"
     printf "Run as root? "; rootcheck && ok || failexit ; sleep 0.4
-    printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.2
-    printf "Getting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 1
-    printf "Running Updates: ... " ; xbps-install -Syu > /dev/null && ok || failexit
-    printf "Installing Parted for 'partprobe': ... " ; xbps-install -Sy parted > /dev/null && ok || failexit
+    printf "Checking Connection: "; networkcheck && ok || failexit ; sleep 0.4
+    printf "Getting Bootloader: "; getbootloader && echo -e "${blue}[$BOOTLOADER]${reset}" || failexit ; sleep 0.4
+    printf "Running Updates: ... " ; xbps-install -Syu > /dev/null && ok || failexit ; sleep 0.4
+    printf "Installing Parted for 'partprobe': ... " ; xbps-install -Sy parted > /dev/null && ok || failexit ; sleep 0.4
     printf "\n"
 }
 
@@ -100,7 +100,7 @@ driveselect() {
 # creates filesystem
 createfilesystem() {
     #creating efi, swap, root partition for UEFI systems; creating swap, root partition for BIOS systems
-    if [ $BOOTLOADER = UEFI ]; then printf "o\nn\np\n \n \n+1G\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK; else printf "o\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK; fi
+    if [ $BOOTLOADER = UEFI ]; then printf "o\nn\np\n \n \n+1G\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK > /dev/null ; else printf "o\nn\np\n \n \n+"$SWAP"G\nn\np\n \n \n \nw\n" | fdisk $DISK > /dev/null; fi
     partprobe $DISK &&
     #getting paths of partitions
     PARTITION1=$(fdisk -l $DISK | grep $DISK | sed 1d | awk '{print $1}' | sed -n "1p") &&
@@ -120,14 +120,14 @@ createfilesystem() {
     
     #filesystem creation
     #efi partition
-    if [ $BOOTLOADER = UEFI ]; then mkfs.fat -F32 $EFIPART; fi
+    if [ $BOOTLOADER = UEFI ]; then mkfs.fat -F32 $EFIPART > /dev/null; fi
     
     
     #root partition
-    mkfs.ext4 $ROOTPART &&
+    mkfs.ext4 $ROOTPART > /dev/null &&
     
     #swap partition
-    mkswap $SWAPPART
+    mkswap $SWAPPART > /dev/null
 }
 
 # system installation
@@ -161,7 +161,7 @@ sysinstall() {
 configure() {
     # configure locales:
     clear
-    echo -e "${bold}Step 4 -> configuration:${reset}"
+    echo -e "${bold}Step 4 -> configuration: [1/3]${reset}"
     while true; do
         read -p "Please enter a valid Keymap: " KMP &&
         chroot /mnt/ loadkeys $KMP && echo "KEYMAP="$KMP >> /mnt/etc/rc.conf && break ||  printf $(fail)" ${blue}$KMP${reset} is not a valid Keymap\n"
@@ -170,8 +170,8 @@ configure() {
     
     # configure users:
     clear
-    echo -e "${bold}Step 4 -> configuration:${reset}"
-    read -p "Please enter a valid username: " USRNME &&
+    echo -e "${bold}Step 4 -> configuration: [2/3]${reset}"
+    read -p "Please enter a valid Username: " USRNME &&
     chroot /mnt/ useradd -m $USRNME &&
     chroot /mnt/ passwd $USRNME &&
     chroot /mnt/ usermod -a -G wheel $USRNME &&
@@ -183,7 +183,7 @@ configure() {
     
     # setting
     clear
-    echo -e "${bold}Step 4 -> configuration:${reset}"
+    echo -e "${bold}Step 4 -> configuration: [3/3]${reset}"
     read -p "Please enter a valid Hostname : " CHN &&
     echo $CHN > /mnt/etc/hostname
 }
