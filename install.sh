@@ -171,6 +171,7 @@ configure() {
     # configure users:
     clear
     echo -e "${bold}Step 4 -> configuration: [2/3]${reset}"
+    echo -e "${blue}Keymap:$KMP${reset}"
     read -p "Please enter a valid Username: " USRNME &&
     chroot /mnt/ useradd -m $USRNME &&
     chroot /mnt/ passwd $USRNME &&
@@ -184,8 +185,20 @@ configure() {
     # setting
     clear
     echo -e "${bold}Step 4 -> configuration: [3/3]${reset}"
+    echo -e "${blue}Keymap:$KMP${reset}"
+    echo -e "${blue}Username:$USRNME${reset}"
     read -p "Please enter a valid Hostname : " CHN &&
     echo $CHN > /mnt/etc/hostname
+    
+    clear
+    echo -e "${green}Finished Configuration:${reset}"
+    echo -e "${blue}-----------------------${reset}"
+    echo -e "${blue}Keymap:$KMP${reset}"
+    echo -e "${blue}Username:$USRNME${reset}"
+    echo -e "${blue}Hostname:$CHN${reset}"
+    echo -e "${blue}-----------------------${reset}"
+    sleep 2;
+    clear
 }
 
 finalize() {
