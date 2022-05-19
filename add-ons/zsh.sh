@@ -20,8 +20,9 @@ sudo xbps-install -Syu
 sudo xbps-install -Sy git
 sudo rm -rf /etc/profile.d/bash.sh
 
-sudo touch /etc/profile.d/zsh.sh
-sudo echo 'export ZDOTDIR="$HOME/.config/zsh"' >> /etc/profile.d/zsh.sh
+sudo touch /tmp/zsh.sh
+sudo echo 'export ZDOTDIR="$HOME/.config/zsh"' >> /tmp/zsh.sh
+sudo mv /tmp/zsh.sh /etc/profile.d/
 mkdir -p $HOME/.config/zsh
 rm -rf $HOME/.bash*
 
@@ -30,7 +31,7 @@ rm -rf $HOME/.bash*
 touch $HOME/.config/zsh/.zshenv
 echo 'export XDG_CONFIG_HOME="$HOME/.config"' >> $HOME/.config/zsh/.zshenv
 mkdir -p $HOME/.cache/zsh
-echo 'export XDG_CACHE_DIR="$HOME/.cache"' >> $HOME/.cache
+echo 'export XDG_CACHE_DIR="$HOME/.cache"' >> $HOME/.config/zsh/.zshenv
 
 
 # .zprofile for autorunning commands on login
@@ -77,7 +78,7 @@ echo -e "\n" >> $HOME/.config/zsh/.zshrc
 echo "# import plugins" >> $HOME/.config/zsh/.zshrc
 mkdir -p $HOME/.local/share/zsh/plugins/
 git clone --depth 1 -- https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting
-git clone --depth 1 -- https://github.com/zsh-users/zsh-autosuggestions.git /tmp/installer/zsh/zsh-autosuggestions
+git clone --depth 1 -- https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.local/share/zsh/plugins/zsh-autosuggestions
 echo "source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> $HOME/.config/zsh/.zshrc
 echo "source $HOME/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> $HOME/.config/zsh/.zshrc
 chsh -s /bin/zsh $USER

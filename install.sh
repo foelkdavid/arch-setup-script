@@ -46,6 +46,7 @@ getbootloader() {
     [ -d /sys/firmware/efi/efivars ] && BOOTLOADER=UEFI || BOOTLOADER=BIOS
 }
 
+# TODO: Fix Swap size
 # calculates swapsize using a simple table
 #     Amount of RAM installed in system 	Recommended swap space
 # RAM ≤ 2GB :       swap = 2X RAM
@@ -286,6 +287,6 @@ echo -e "\n${bold}Step 5 -> finalize:${reset}" ; sleep 0.4
 finalize
 
 # REBOOT
-#reboot now
+reboot now
 
 
