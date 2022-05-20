@@ -84,7 +84,7 @@ echo "HISTSIZE=10000" >> $HOME/.config/zsh/.zshrc
 echo "SAVEHIST=10000" >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
 echo "# adding locations to PATH" >> $HOME/.config/zsh/.zshrc
-echo "export PATH=/home/david/.local/bin:$PATH" >> $HOME/.config/zsh/.zshrc
+echo "export PATH=$HOME/.local/bin:$PATH" >> $HOME/.config/zsh/.zshrc
 echo "# import plugins" >> $HOME/.config/zsh/.zshrc
 mkdir -p $HOME/.local/share/zsh/plugins/
 git clone --depth 1 -- https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting
