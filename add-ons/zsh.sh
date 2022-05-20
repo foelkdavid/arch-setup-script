@@ -35,9 +35,7 @@ echo 'export XDG_CONFIG_HOME="$HOME/.config"' >> $HOME/.config/zsh/.zshenv
 mkdir -p $HOME/.cache/zsh
 echo 'export XDG_CACHE_DIR="$HOME/.cache"' >> $HOME/.config/zsh/.zshenv
 echo "\n" >> $HOME/.config/zsh/.zshenv
-echo "# change colors for prompt and co." >> $HOME/.config/zsh/.zshenv
-echo 'PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "' >> $HOME/.config/zsh/.zshenv
-echo "ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#777c66'" >> $HOME/.config/zsh/.zshenv
+
 
 
 # .zprofile for autorunning commands on login
@@ -63,6 +61,10 @@ echo "setopt autocd" >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
 echo "# enable colors:" >> $HOME/.config/zsh/.zshrc
 echo "autoload -U colors && colors" >> $HOME/.config/zsh/.zshrc
+echo "\n" >> $HOME/.config/zsh/.zshrc
+echo "# change colors for prompt and co." >> $HOME/.config/zsh/.zshrc
+echo 'PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "' >> $HOME/.config/zsh/.zshrc
+echo "ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#777c66'" >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
 echo "# fix annoying stuff" >> $HOME/.config/zsh/.zshrc
 echo "# disable ctrl-s to freeze terminal" >> $HOME/.config/zsh/.zshrc
@@ -90,5 +92,5 @@ sudo xbps-install -Sy zsh
 ZVER=$(zsh --version | awk '{print $2}')
 sudo rm /usr/lib/zsh/$ZVER/zsh/newuser.so
 chsh -s /bin/zsh $USER
-/bin/zsh -c 'rm -rf $HOME/.bash*'
+rm -rf $HOME/.bash*
 echo "DONE!"
