@@ -267,7 +267,7 @@ echo -e "${bold}Step 2 -> drives:${reset}" ; sleep 0.4
 echo -e "${bold}Partitioning:${reset}"
 driveselect || exit ; sleep 0.4
 echo -e "${bold}Creating Filesystem:${reset}"
-getswap ; echo -e "Swapsize: ${blue}[$SWAP GB]${reset}"
+getswap ; echo -e "Swapsize: ${blue}[$SWAP GB]${reset}" ; sleep 1
 createfilesystem && ok || failexit ; sleep 0.4
 echo -e "${bold}Mounting Filesystems:${reset}"
 mount $ROOTPART /mnt && swapon $SWAPPART &&
