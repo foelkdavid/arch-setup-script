@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # dependencies
-sudo xbps-install -Sy python3-pip
+sudo xbps-install -Sy python3-pip stress
 
 # tools
 sudo xbps-install -Sy neofetch htop cpupower
