@@ -90,5 +90,5 @@ sudo xbps-install -Sy zsh
 ZVER=$(zsh --version | awk '{print $2}')
 sudo rm /usr/lib/zsh/$ZVER/zsh/newuser.so
 chsh -s /bin/zsh $USER
-/bin/zsh rm -rf $HOME/.bash*
+/bin/zsh -c 'rm -rf $HOME/.bash*'
 echo "DONE!"
