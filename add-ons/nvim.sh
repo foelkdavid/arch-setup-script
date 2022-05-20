@@ -17,7 +17,7 @@ printf "Checking Connection: \n"; networkcheck && echo [ok] || exit ; sleep 0.4
 # setting up vim
 # preparation
 sudo xbps-install -Syu
-sudo xbps-install -Sy -nvim
+sudo xbps-install -Sy neovim
 mkdir -p $HOME/.config/nvim
 touch $HOME/.config/nvim/init.vim
 echo "set showmatch" >> $HOME/.config/nvim/init.vim
