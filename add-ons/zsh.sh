@@ -97,4 +97,7 @@ sudo rm /usr/lib/zsh/$ZSHVER/zsh/newuser.so
 chsh -s /bin/zsh $USER
 #rm -rf $HOME/.bash*
 #rm -rf $HOME/.inputrc
+source $HOME/.config/zsh/.zshenv
+source $HOME/.config/zsh/.zprofile
+source $HOME/.config/zsh/.zshrc
 echo "DONE!"
