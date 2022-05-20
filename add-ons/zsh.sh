@@ -24,7 +24,7 @@ touch /tmp/zsh.sh
 echo 'export ZDOTDIR="$HOME/.config/zsh"' >> /tmp/zsh.sh
 sudo mv /tmp/zsh.sh /etc/profile.d/
 mkdir -p $HOME/.config/zsh
-rm -rf $HOME/.bash*
+
 
 
 # .zshenv for environment variables
@@ -90,4 +90,5 @@ sudo xbps-install -Sy zsh
 ZVER=$(zsh --version | awk '{print $2}')
 sudo rm /usr/lib/zsh/$ZVER/zsh/newuser.so
 chsh -s /bin/zsh $USER
+/bin/zsh rm -rf $HOME/.bash*
 echo "DONE!"
