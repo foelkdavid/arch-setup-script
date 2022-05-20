@@ -253,7 +253,7 @@ finalize() {
     echo -e "${bold}enjoy your new system :)${reset}"
     printf "\n"
     cp -r add-ons /mnt/home/$USRNME
-    echo "rebooting..." ; sleep 1
+    echo "rebooting... see you soon :)" ; sleep 1
 }
 
 
