@@ -2,8 +2,8 @@
 
 # get sources
 # these are my own forks, using plugins that have to be manually merged.
-git clone --depth 1 -- https://github.com/foelkdavid/dwmfork /tmp/sources/dwm
-git clone --depth 1 -- https://github.com/foelkdavid/stfork /tmp/sources/st
+git clone --depth 1 -- https://github.com/foelkdavid/dwm /tmp/sources/dwm
+git clone --depth 1 -- https://github.com/foelkdavid/st /tmp/sources/st
 
 # other, 
 git clone --depth 1 -- https://github.com/nsxiv/nsxiv /tmp/sources/nsxiv
