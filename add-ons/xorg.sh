@@ -1,5 +1,5 @@
 #!/bin/sh
-sudo xbps-install -S libX11 xauth xorg-minimal libXinerama libXft xrdb xinit libXrandr xrandr xclip xorg-minimal xorg-fonts mesa setxkbmap
+sudo xbps-install -Sy libX11 xauth xorg-minimal libXinerama libXft xrdb xinit libXrandr xrandr xclip xorg-minimal xorg-fonts mesa setxkbmap
 
 
 
@@ -12,7 +12,7 @@ sudo xbps-install -S libX11 xauth xorg-minimal libXinerama libXft xrdb xinit lib
 #sudo xbps-install xf86-video-nouveau
 
 # vmware
-sudo xbps-install xf86-video-vmware
+sudo xbps-install -Sy xf86-video-vmware
 
 
 
