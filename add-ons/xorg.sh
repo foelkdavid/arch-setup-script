@@ -2,7 +2,7 @@
 sudo xbps-install -S libX11 xauth xorg-minimal libXinerama libXft xrdb xinit libXrandr xrandr xclip xorg-minimal xorg-fonts mesa
 
 touch /tmp/x.sh
-echo 'export XINITRC="$HOME/.config/x"' >> /tmp/x.sh
+echo 'export XINITRC="$HOME/.config/x/xinitrc"' >> /tmp/x.sh
 sudo mv /tmp/x.sh /etc/profile.d/
 mkdir -p $HOME/.config/x
 
@@ -18,4 +18,4 @@ mkdir -p $HOME/.config/x
 # vmware
 sudo xbps-install xf86-video-vmware
 
-echo "exec dwm" > $HOME/.config/x/.xinitrc
+echo "exec dwm" > $HOME/.config/x/xinitrc
