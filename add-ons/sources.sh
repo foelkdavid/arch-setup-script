@@ -15,4 +15,15 @@ mv /tmp/sources/dwmblocks $HOME/.local/src/dwmblocks && cd $HOME/.local/src/dwmb
 mv /tmp/sources/st $HOME/.local/src/st && cd $HOME/.local/src/st && make && sudo make install
 mv /tmp/sources/nsxiv $HOME/.local/src/nsxiv && cd $HOME/.local/src/nsxiv && make && sudo make install
 cd ~/
+
+
+# linking config files and creating desired directories
+cd $HOME/.config
+mkdir dwm dwmblocks st nsxiv
+ln -s ~/.local/src/dwm/config.h dwm/config.h
+ln -s ~/.local/src/st/config.h st/config.h
+ln -s ~/.local/src/dwmblocks/blocks.h dwm/blocks.h
+ln -s ~/.local/src/nsxiv/config.h nsxiv/config.h
+
+
 echo "DONE!"
