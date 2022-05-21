@@ -14,6 +14,8 @@ sudo xbps-install -S libX11 xauth xorg-minimal libXinerama libXft xrdb xinit lib
 # vmware
 sudo xbps-install xf86-video-vmware
 
-ln -s /etc/X11/xinit/xinitrc .config/x/xinitrc
-echo "#!/bin/sh" > $HOME/.config/x/xinitrc
-echo "exec dwm" >> $HOME/.config/x/xinitrc
+mkdir -p $HOME/.config/x
+ln -s /etc/X11/xinit/xinitrc $HOME/.config/x/xinitrc
+sudo chown $USER:$USER $HOME/.config/x/xinitrc
+echo '#!/bin/sh' > $HOME/.config/x/xinitrc
+echo 'exec dwm' >> $HOME/.config/x/xinitrc
