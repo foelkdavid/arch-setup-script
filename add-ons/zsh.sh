@@ -16,7 +16,6 @@ printf "Checking Connection: \n"; networkcheck && echo [ok] || exit ; sleep 0.4
 
 # setting up zsh
 # preparation
-clear && echo -e "${blue}SETTING UP ZSH${reset}" ; sleep 0.4
 sudo xbps-install -Syu
 sudo xbps-install -Sy git
 sudo rm -rf /etc/profile.d/bash.sh
