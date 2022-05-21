@@ -6,4 +6,5 @@ $PWD/add-ons/nvim.sh
 $PWD/add-ons/basics.sh
 $PWD/add-ons/sources.sh
 $PWD/add-ons/xorg.sh
+$PWD/add-ons/applications.sh
 $PWD/add-ons/cleanup.sh
