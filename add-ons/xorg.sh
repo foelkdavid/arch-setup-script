@@ -1,4 +1,6 @@
 #!/bin/sh
+sudo xbps-install -S libX11 xauth xorg-minimal libXinerama libXft xrdb xinit libXrandr xrandr xclip xorg-minimal xorg-fonts mesa
+
 touch /tmp/x.sh
 echo 'export XINITRC="$HOME/.config/x"' >> /tmp/x.sh
 sudo mv /tmp/x.sh /etc/profile.d/
@@ -6,7 +8,6 @@ mkdir -p $HOME/.config/x
 
 
 
-xbps-install -Sy libX11 xorg-minimal libXinerama libXft xrdb xinit libXrandr xrandr xclip xorg-minimal xorg-fonts mesa
 
 # amdgpu
 #sudo xbps-install xf86-video-amdgpu
