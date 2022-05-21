@@ -13,6 +13,6 @@ mkdir -p $HOME/.local/src/
 mv /tmp/sources/dwm $HOME/.local/src/dwm && cd $HOME/.local/src/dwm && make && sudo make install
 mv /tmp/sources/dwmblocks $HOME/.local/src/dwmblocks && cd $HOME/.local/src/dwmblocks && make && sudo make install
 mv /tmp/sources/st $HOME/.local/src/st && cd $HOME/.local/src/st && make && sudo make install
-mv /tmp/sources/nsxiv$HOME/.local/src/nsxiv && cd $HOME/.local/src/nsxiv && make && sudo make install
+mv /tmp/sources/nsxiv $HOME/.local/src/nsxiv && cd $HOME/.local/src/nsxiv && make && sudo make install
 cd ~/
 echo "DONE!"
