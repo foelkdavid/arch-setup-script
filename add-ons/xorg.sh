@@ -17,5 +17,4 @@ sudo xbps-install xf86-video-vmware
 mkdir -p $HOME/.config/x
 ln -s /etc/X11/xinit/xinitrc $HOME/.config/x/xinitrc
 sudo chown $USER:$USER $HOME/.config/x/xinitrc
-echo '#!/bin/sh' > $HOME/.config/x/xinitrc
-echo 'exec dwm' >> $HOME/.config/x/xinitrc
+printf "\!#/bin/sh\nexec dwm" > $HOME/.config/x/xinitrc
