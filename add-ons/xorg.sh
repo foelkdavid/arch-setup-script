@@ -27,6 +27,7 @@ echo 'sxhkd &' >> $HOME/.config/x/xinitrc
 echo 'setxkbmap de &' >> $HOME/.config/x/xinitrc
 echo '# dunst &' >> $HOME/.config/x/xinitrc
 echo 'picom -b &' >> $HOME/.config/x/xinitrc
+echo 'dwmblocks &' >> $HOME/.config/x/xinitrc
 echo 'exec dwm' >> $HOME/.config/x/xinitrc
 
 mkdir -p $HOME/.config/sxhkd
