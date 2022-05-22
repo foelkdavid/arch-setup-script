@@ -2,12 +2,12 @@
 
 # get sources
 # these are my own forks, using plugins that have to be manually merged.
-git clone --depth 1 -- https://github.com/foelkdavid/dwm /tmp/sources/dwm
-git clone --depth 1 -- https://github.com/foelkdavid/st /tmp/sources/st
+git clone -- https://github.com/foelkdavid/dwm /tmp/sources/dwm
+git clone -- https://github.com/foelkdavid/st /tmp/sources/st
 
 # other, 
-git clone --depth 1 -- https://github.com/nsxiv/nsxiv /tmp/sources/nsxiv
-git clone --depth 1 -- https://github.com/torrinfail/dwmblocks /tmp/sources/dwmblocks
+git clone -- https://github.com/nsxiv/nsxiv /tmp/sources/nsxiv
+git clone -- https://github.com/torrinfail/dwmblocks /tmp/sources/dwmblocks
 
 mkdir -p $HOME/.local/src/
 mv /tmp/sources/dwm $HOME/.local/src/dwm && cd $HOME/.local/src/dwm && make && sudo make install

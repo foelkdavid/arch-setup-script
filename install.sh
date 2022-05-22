@@ -254,7 +254,7 @@ finalize() {
     printf "\n"
     cp -r add-ons /mnt/home/$USRNME
     cp install-addons.sh /mnt/home/$USRNME
-    chown -R $USRNME:$USRNME /mnt/home/$USRNME
+    chown -R $USRNME: /mnt/home/$USRNME
     echo "rebooting... see you soon :)" ; sleep 1
 }
 
