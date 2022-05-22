@@ -22,6 +22,8 @@ printf "Checking Connection: \n"; networkcheck && echo [ok] || exit ; sleep 0.4
 
 sudo xbps-install -Syu git mp/libc-locales /mnt/etc/default/
 chmod +x $PWD/add-ons/*
+$PWD/add-ons/zsh.sh
+$PWD/add-ons/nvim.sh
 $PWD/add-ons/basics.sh
 $PWD/add-ons/sources.sh
 $PWD/add-ons/xorg.sh
