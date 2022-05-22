@@ -53,7 +53,7 @@ getbootloader() {
 # RAM = 2GB – 8GB : swap = RAM
 # RAM > 8GB       : swap = 8GB
 getswap() {
-    RAM=$(grep MemTotal /proc/meminfo | awk '{print $2}') && RAM=$(( $RAM/1024000 ))
+    RAM=$(grep MemTotal /proc/meminfo | awk '{print $2}') && RAM=$(( $RAM + 500000 )) && RAM=$(( $RAM/1024000 ))
     if [[ RAM -lt 2 ]]; then
         SWAP=$(($RAM*2))
         elif [[ RAM -lt 8 ]]; then
@@ -253,7 +253,9 @@ finalize() {
     echo -e "${bold}enjoy your new system :)${reset}"
     printf "\n"
     cp -r add-ons /mnt/home/$USRNME
-    echo "rebooting..." ; sleep 1
+    cp install-addons.sh /mnt/home/$USRNME
+    chown -R $USRNME: /mnt/home/$USRNME
+    echo "rebooting... see you soon :)" ; sleep 1
 }
 
 
@@ -267,7 +269,7 @@ echo -e "${bold}Step 2 -> drives:${reset}" ; sleep 0.4
 echo -e "${bold}Partitioning:${reset}"
 driveselect || exit ; sleep 0.4
 echo -e "${bold}Creating Filesystem:${reset}"
-getswap ; echo -e "Swapsize: ${blue}[$SWAP GB]${reset}"
+getswap ; echo -e "Swapsize: ${blue}[$SWAP GB]${reset}" ; sleep 1
 createfilesystem && ok || failexit ; sleep 0.4
 echo -e "${bold}Mounting Filesystems:${reset}"
 mount $ROOTPART /mnt && swapon $SWAPPART &&

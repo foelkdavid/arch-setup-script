@@ -24,7 +24,7 @@ touch /tmp/zsh.sh
 echo 'export ZDOTDIR="$HOME/.config/zsh"' >> /tmp/zsh.sh
 sudo mv /tmp/zsh.sh /etc/profile.d/
 mkdir -p $HOME/.config/zsh
-rm -rf $HOME/.bash*
+
 
 
 # .zshenv for environment variables
@@ -34,6 +34,8 @@ echo "\n" >> $HOME/.config/zsh/.zshenv
 echo 'export XDG_CONFIG_HOME="$HOME/.config"' >> $HOME/.config/zsh/.zshenv
 mkdir -p $HOME/.cache/zsh
 echo 'export XDG_CACHE_DIR="$HOME/.cache"' >> $HOME/.config/zsh/.zshenv
+echo "\n" >> $HOME/.config/zsh/.zshenv
+
 
 
 # .zprofile for autorunning commands on login
@@ -53,6 +55,7 @@ echo 'alias xi="sudo xbps-install"' >> $HOME/.config/zsh/.zshrc
 echo 'alias xr="sudo xbps-remove"' >> $HOME/.config/zsh/.zshrc
 echo 'alias xu="sudo xbps-install -Syu"' >> $HOME/.config/zsh/.zshrc
 echo 'alias xs="sudo xbps-query -Rs"' >> $HOME/.config/zsh/.zshrc
+echo 'alias vim="nvim"' >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
 echo "# auto cd into typed directory:" >> $HOME/.config/zsh/.zshrc
 echo "setopt autocd" >> $HOME/.config/zsh/.zshrc
@@ -60,8 +63,9 @@ echo "\n" >> $HOME/.config/zsh/.zshrc
 echo "# enable colors:" >> $HOME/.config/zsh/.zshrc
 echo "autoload -U colors && colors" >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
-echo "# change prompt:" >> $HOME/.config/zsh/.zshrc
+echo "# change colors for prompt and co." >> $HOME/.config/zsh/.zshrc
 echo 'PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "' >> $HOME/.config/zsh/.zshrc
+echo "ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#777c66'" >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
 echo "# fix annoying stuff" >> $HOME/.config/zsh/.zshrc
 echo "# disable ctrl-s to freeze terminal" >> $HOME/.config/zsh/.zshrc
@@ -79,6 +83,8 @@ echo 'HISTFILE=$HOME/.cache/zsh/histfile.txt' >> $HOME/.config/zsh/.zshrc
 echo "HISTSIZE=10000" >> $HOME/.config/zsh/.zshrc
 echo "SAVEHIST=10000" >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
+echo "# adding locations to PATH" >> $HOME/.config/zsh/.zshrc
+echo "export PATH=$HOME/.local/bin:$PATH" >> $HOME/.config/zsh/.zshrc
 echo "# import plugins" >> $HOME/.config/zsh/.zshrc
 mkdir -p $HOME/.local/share/zsh/plugins/
 git clone --depth 1 -- https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting
@@ -86,7 +92,12 @@ git clone --depth 1 -- https://github.com/zsh-users/zsh-autosuggestions.git $HOM
 echo 'source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh' >> $HOME/.config/zsh/.zshrc
 echo 'source $HOME/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh' >> $HOME/.config/zsh/.zshrc
 sudo xbps-install -Sy zsh
-ZVER=$(zsh --version | awk '{print $2}')
-sudo rm /usr/lib/zsh/$ZVER/zsh/newuser.so
+ZSHVER=$(zsh --version | awk '{print $2}')
+sudo rm /usr/lib/zsh/$ZSHVER/zsh/newuser.so
 chsh -s /bin/zsh $USER
+#rm -rf $HOME/.bash*
+#rm -rf $HOME/.inputrc
+source $HOME/.config/zsh/.zshenv
+source $HOME/.config/zsh/.zprofile
+source $HOME/.config/zsh/.zshrc
 echo "DONE!"
