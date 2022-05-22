@@ -20,7 +20,7 @@ printf "Checking Connection: \n"; networkcheck && echo [ok] || exit ; sleep 0.4
 # sudo sv start dhcpcd
 # sleep 5
 
-sudo xbps-install -Syu git mp/libc-locales /mnt/etc/default/
+sudo xbps-install -Syu git
 chmod +x $PWD/add-ons/*
 $PWD/add-ons/zsh.sh
 $PWD/add-ons/nvim.sh
