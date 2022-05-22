@@ -32,7 +32,7 @@ echo 'exec dwm' >> $HOME/.config/x/xinitrc
 
 mkdir -p $HOME/.config/sxhkd
 echo 'super + d' > $HOME/.config/sxhkd/sxhkdrc
-echo 'rofi -show drun -theme $HOME/.config/rofi/themes/appmenu.rasi' >> $HOME/.config/sxhkd/sxhkdrc
+echo '\trofi -show drun -theme $HOME/.config/rofi/themes/appmenu.rasi' >> $HOME/.config/sxhkd/sxhkdrc
 echo '\n' >> $HOME/.config/sxhkd/sxhkdrc
 echo 'super + return'  >> $HOME/.config/sxhkd/sxhkdrc
-echo 'st'  >> $HOME/.config/sxhkd/sxhkdrc
+echo '\tst'  >> $HOME/.config/sxhkd/sxhkdrc
