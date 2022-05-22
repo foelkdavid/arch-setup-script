@@ -22,4 +22,16 @@ sudo mv /tmp/x.sh /etc/profile.d/
 mkdir -p $HOME/.config/x
 ln -s /etc/X11/xinit/xinitrc $HOME/.config/x/xinitrc #TODO: Find a way to set .xinitrc location
 sudo chown $USER:$USER $HOME/.config/x/xinitrc
-printf '!#/bin/sh\n\setxkbmap de\nexec dwm\n' > $HOME/.config/x/xinitrc
+echo '#!/bin/sh' > $HOME/.config/x/xinitrc
+echo 'sxhkd &' >> $HOME/.config/x/xinitrc
+echo 'setxkbmap de &' >> $HOME/.config/x/xinitrc
+echo '# dunst &' >> $HOME/.config/x/xinitrc
+echo 'picom -b &' >> $HOME/.config/x/xinitrc
+echo 'exec dwm' >> $HOME/.config/x/xinitrc
+
+mkdir -p $HOME/.config/sxhkd
+echo 'super + d' > $HOME/.config/sxhkd/sxhkdrc
+echo 'rofi -show drun -theme $HOME/.config/rofi/themes/appmenu.rasi' >> $HOME/.config/sxhkd/sxhkdrc
+echo '\n' >> $HOME/.config/sxhkd/sxhkdrc
+echo 'super + return'  >> $HOME/.config/sxhkd/sxhkdrc
+echo 'st'  >> $HOME/.config/sxhkd/sxhkdrc
