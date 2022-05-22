@@ -3,7 +3,6 @@
 
 
 
-sudo xbps-reconfigure -f glibc-locales
 
 # dependencies
 sudo xbps-install -Sy python3-pip stress make gcc libX11-devel libXft-devel libXinerama-devel pkg-config imlib2-devel libexif-devel giflib-devel libwebp-devel dbus dbus-x11 || exit

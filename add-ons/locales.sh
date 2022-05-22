@@ -8,3 +8,5 @@ echo 'de_AT ISO-8869-15' >> /tmp/libc-locales
 echo 'en_US.UTF-8' >> /tmp/libc-locales
 echo 'en_US ISO-8859-1' >> /tmp/libc-locales
 sudo mv /tmp/libc-locales /etc/default/
+
+sudo xbps-reconfigure -f glibc-locales
