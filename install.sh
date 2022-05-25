@@ -252,8 +252,7 @@ finalize() {
     echo -e "${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
     echo -e "${bold}enjoy your new system :)${reset}"
     printf "\n"
-    cp -r add-ons /mnt/home/$USRNME
-    cp install-addons.sh /mnt/home/$USRNME
+    cp -r . /mnt/home/$USRNME
     chown -R $USRNME: /mnt/home/$USRNME
     echo "rebooting... see you soon :)" ; sleep 1
 }
