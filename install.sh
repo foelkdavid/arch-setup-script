@@ -253,7 +253,7 @@ finalize() {
     echo -e "${bold}enjoy your new system :)${reset}"
     printf "\n"
     mkdir /mnt/home/$USRNME/INSTALLER
-    cp -r . /mnt/home/$USRNME
+    cp -r . /mnt/home/$USRNME/INSTALLER
     chroot /mnt/ chown -R $USRNME: /home/$USRNME/INSTALLER
     echo "rebooting... see you soon :)" ; sleep 1
 }
