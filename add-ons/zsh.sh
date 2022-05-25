@@ -40,7 +40,7 @@ echo "\n" >> $HOME/.config/zsh/.zshenv
 
 # .zprofile for autorunning commands on login
 echo "# USE THIS FILE TO AUTORUN COMMANDS ON LOGIN" >> $HOME/.config/zsh/.zprofile
-echo "if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then" >> $HOME/.config/zsh/.zprofile                                                                                 
+echo 'if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then' >> $HOME/.config/zsh/.zprofile                                                                                 
 echo "\texec startx" >> $HOME/.config/zsh/.zprofile
 echo "fi" >> $HOME/.config/zsh/.zprofile
 
