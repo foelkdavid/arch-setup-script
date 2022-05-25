@@ -252,8 +252,9 @@ finalize() {
     echo -e "${green}INSTALLATION COMPLETED${reset}" ; sleep 0.4
     echo -e "${bold}enjoy your new system :)${reset}"
     printf "\n"
+    mkdir /mnt/home/$USRNME/INSTALLER
     cp -r . /mnt/home/$USRNME
-    chown -R $USRNME: /mnt/home/$USRNME
+    chroot /mnt/ chown -R $USRNME: /home/$USRNME/INSTALLER
     echo "rebooting... see you soon :)" ; sleep 1
 }
 
