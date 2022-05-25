@@ -1,5 +1,6 @@
 #!/bin/sh
 echo "START, please wait..."  
+sudo ln -s /etc/sv/dhcpcd /var/service/ ; wait && sleep 2; echo "dhcpcd enabled."
 
 rootcheck() {
     [ $(id -u) -eq 0 ] && return 1 || return 0
@@ -7,11 +8,11 @@ rootcheck() {
 
 # naive networkcheck
 networkcheck() {
-    ping -c 2 voidlinux.org > /dev/null && return 0 || return 1
+    ping -c 2 voidlinux.org > /dev/null && return 0 || exit
 }
 
 printf "Run as root? \n"; rootcheck && echo [ok] || exit ; sleep 0.4
-printf "Checking Connection: \n"; networkcheck && echo [ok] || exit ; sleep 0.4
+printf "Checking Connection: \n"; networkcheck && echo [ok] || exit
 
 
 
