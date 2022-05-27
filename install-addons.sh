@@ -25,9 +25,9 @@ sudo xbps-install -Syu git
 chmod +x $PWD/add-ons/*
 $PWD/add-ons/dependencies.sh
 $PWD/add-ons/zsh.sh
-$PWD/add-ons/applications.sh
-$PWD/add-ons/nvim.sh
 $PWD/add-ons/sources.sh
+$PWD/add-ons/dotfiles.sh
+$PWD/add-ons/nvim.sh
 $PWD/add-ons/xorg.sh
 $PWD/add-ons/locales.sh
 $PWD/add-ons/cleanup.sh

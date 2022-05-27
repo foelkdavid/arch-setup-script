@@ -34,4 +34,9 @@ ZSHVER=$(zsh --version | awk '{print $2}')
 sudo rm /usr/lib/zsh/$ZSHVER/zsh/newuser.so
 chsh -s /bin/zsh $USER
 
+# add nice plugins
+git clone --depth 1 -- https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting
+git clone --depth 1 -- https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.local/share/zsh/plugins/zsh-autosuggestions
+
+
 echo "DONE!"
