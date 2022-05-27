@@ -2,7 +2,7 @@
 sudo xbps-install -Sy libX11 xauth xorg-minimal libXinerama libXft xrdb xinit libXrandr xrandr xclip xorg-minimal mesa setxkbmap
 
 # removed for testing purposes
-#sudo xbps-install -Sy xorg-fonts
+sudo xbps-install -Sy xorg-fonts
 
 
 
