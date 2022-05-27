@@ -1,16 +1,18 @@
 #!/bin/sh
 echo "START, please wait..."
 
+#!/bin/sh
 rootcheck() {
-    [ $(id -u) -eq 0 ] && return 1 || return 0
+    [ $(id -u) -eq 0 ] && return 0 || return 1
+
 }
+rootcheck && echo "dont run this as root." && exit
+
 
 # naive networkcheck
 networkcheck() {
     ping -c 2 voidlinux.org > /dev/null && return 0 || exit
 }
-
-printf "Run as root? \n"; rootcheck && echo [ok] || exit ; sleep 0.4
 printf "Checking Connection: \n"; networkcheck && echo [ok] || exit
 
 
