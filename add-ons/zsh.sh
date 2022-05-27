@@ -41,7 +41,7 @@ echo "# USE THIS FILE FOR SHELL CONFIGURATION AND USERCOMMANDS" >> $HOME/.config
 echo "\n" >> $HOME/.config/zsh/.zshrc
 
 echo "# convenience aliases:" >> $HOME/.config/zsh/.zshrc
-echo "# source $HOME/.config/zsh/aliases" >> $HOME/.config/zsh/.zshrc
+echo "source $HOME/.config/zsh/aliases" >> $HOME/.config/zsh/.zshrc
 echo "\n" >> $HOME/.config/zsh/.zshrc
 echo 'alias reboot="sudo reboot"' >> $HOME/.config/zsh/aliases
 echo 'alias poweroff="sudo poweroff"' >> $HOME/.config/zsh/aliases

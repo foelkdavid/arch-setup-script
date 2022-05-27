@@ -25,7 +25,7 @@ ln -s ~/.local/src/dwm/config.h dwm/config.h
 ln -s ~/.local/src/st/config.h st/config.h
 ln -s ~/.local/src/dwmblocks/blocks.h dwmblocks/blocks.h
 ln -s ~/.local/src/dwmblocks/modules dwmblocks/modules
-
+chmod -R +x ~/.local/src/dwmblocks
 ln -s ~/.local/src/nsxiv/config.h nsxiv/config.h
 
 
