@@ -22,8 +22,8 @@ printf "Checking Connection: \n"; networkcheck && echo [ok] || exit
 sudo xbps-install -Syu git
 chmod +x $PWD/add-ons/*
 $PWD/add-ons/basics.sh
-$PWD/add-ons/applications.sh
 $PWD/add-ons/zsh.sh
+$PWD/add-ons/applications.sh
 $PWD/add-ons/nvim.sh
 $PWD/add-ons/sources.sh
 $PWD/add-ons/xorg.sh
