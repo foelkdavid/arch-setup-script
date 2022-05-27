@@ -1,8 +1,5 @@
 #!/bin/sh
 echo "START, please wait..."
-echo "enabling dhcpcd"  
-sudo ln -s /etc/sv/dhcpcd /var/service/
-for i in {1..5}; do printf "." && sleep 1; done && echo "\ndhcpcd enabled."
 
 rootcheck() {
     [ $(id -u) -eq 0 ] && return 1 || return 0
