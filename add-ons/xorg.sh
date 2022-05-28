@@ -16,7 +16,6 @@ sudo xbps-install -Sy xorg-fonts
 sudo xbps-install -Sy xf86-video-vmware
 
 
-
 touch /tmp/x.sh
 echo 'export XAUTHORITY="$HOME/.config/x/Xauthority"' >> /tmp/x.sh
 sudo mv /tmp/x.sh /etc/profile.d/
@@ -29,7 +28,12 @@ echo 'setxkbmap de &' >> $HOME/.config/x/xinitrc
 echo '# dunst &' >> $HOME/.config/x/xinitrc
 echo 'picom -b &' >> $HOME/.config/x/xinitrc
 echo 'dwmblocks &' >> $HOME/.config/x/xinitrc
+echo 'xwallpaper --zoom $HOME/.config/x/wallpaper.jpg &' >> $HOME/.config/x/xinitrc
 echo 'exec dwm' >> $HOME/.config/x/xinitrc
+
+#get wallpaper
+ wget -O $HOME/.config/x/wallpaper.jpg https://ia800301.us.archive.org/18/items/mma_a_country_road_437586/437586.jpg
+
 
 # SXHKD setup
 mkdir -p $HOME/.config/sxhkd
