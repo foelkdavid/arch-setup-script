@@ -20,8 +20,8 @@ printf "Checking Connection: \n"; networkcheck && echo [ok] || exit
 # sudo ln -s /etc/sv/dhcpcd /var/service
 # sudo sv start dhcpcd
 # sleep 5
-
-sudo xbps-install -yu xbps
+sudo xbps-install -Syu
+sudo xbps-install -u xbps
 sudo xbps-install -Syu
 sudo xbps-install -S git
 chmod +x $PWD/add-ons/*
