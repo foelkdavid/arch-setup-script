@@ -24,12 +24,12 @@ sudo xbps-install -Syu
 sudo xbps-install -Syu xbps
 sudo xbps-install -Syu
 sudo xbps-install -S git
-chmod +x $PWD/add-ons/*
-$PWD/add-ons/dependencies.sh
-$PWD/add-ons/zsh.sh
-$PWD/add-ons/sources.sh
-$PWD/add-ons/dotfiles.sh
-$PWD/add-ons/nvim.sh
-$PWD/add-ons/xorg.sh
-$PWD/add-ons/locales.sh
-$PWD/add-ons/cleanup.sh
+chmod +x $PWD/basics/*
+$PWD/basics/dependencies.sh
+$PWD/basics/zsh.sh
+$PWD/basics/sources.sh
+$PWD/basics/dotfiles.sh
+$PWD/basics/nvim.sh
+$PWD/basics/xorg.sh
+$PWD/basics/locales.sh
+$PWD/basics/cleanup.sh
