@@ -21,7 +21,8 @@ printf "Checking Connection: \n"; networkcheck && echo [ok] || exit
 # sudo sv start dhcpcd
 # sleep 5
 
-sudo xbps-install -Syu git
+sudo xbps-install -Syu
+sudo xbps-install -S git
 chmod +x $PWD/add-ons/*
 $PWD/add-ons/dependencies.sh
 $PWD/add-ons/zsh.sh
