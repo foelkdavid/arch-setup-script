@@ -34,6 +34,13 @@ echo 'exec dwm' >> $HOME/.config/x/xinitrc
 #get wallpaper
  wget -O $HOME/.config/x/wallpaper.jpg https://ia800301.us.archive.org/18/items/mma_a_country_road_437586/437586.jpg
 
+#add icon fonts
+sudo xbps-install -S p7zip wget
+mkdir ~/.config/fonts
+ln -s ~/.config/fonts ~/.fonts
+wget -O /tmp/fa.zip https://github.com/FortAwesome/Font-Awesome/releases/download/6.1.1/fontawesome-free-6.1.1-desktop.zip
+7z /tmp/fa.zip -o{fa}
+cp /tmp/fa/otfs/* ~/.fonts
 
 # SXHKD setup
 mkdir -p $HOME/.config/sxhkd
