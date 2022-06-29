@@ -1,5 +1,5 @@
 #!/bin/sh
-sudo pacman -S --noconfirm xwallpaper xorg-xauth xorg xorg-xrdb xorg-xinit xrandr xclip mesa xorg-setxkbmap
+sudo pacman -S --noconfirm xwallpaper xorg-xauth xorg xorg-xrdb xorg-xinit xclip mesa xorg-setxkbmap
 
 # removed for testing purposes
 sudo pacman -S --noconfirm xorg-fonts
