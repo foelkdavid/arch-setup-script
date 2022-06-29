@@ -1,7 +1,7 @@
 #!/bin/sh
-sudo xbps-install -Sy dunst picom rofi sxhkd
+sudo pacman -S --noconfirm dunst picom rofi sxhkd
 
-sudo xbps-install -Sy neofetch htop cpupower || exit
+sudo pacman -S --noconfirm neofetch htop cpupower || exit
 pip install wheel || exit
 pip install s-tui || exit
 

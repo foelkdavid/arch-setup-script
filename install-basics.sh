@@ -11,7 +11,7 @@ rootcheck && echo "dont run this as root." && exit
 
 # naive networkcheck
 networkcheck() {
-    ping -c 2 voidlinux.org > /dev/null && return 0 || exit
+    ping -c 2 archlinux.org > /dev/null && return 0 || exit
 }
 printf "Checking Connection: \n"; networkcheck && echo [ok] || exit
 
@@ -20,10 +20,8 @@ printf "Checking Connection: \n"; networkcheck && echo [ok] || exit
 # sudo ln -s /etc/sv/dhcpcd /var/service
 # sudo sv start dhcpcd
 # sleep 5
-sudo xbps-install -Syu
-sudo xbps-install -Syu xbps
-sudo xbps-install -Syu
-sudo xbps-install -S git
+sudo pacman -Syu
+sudo pacman -S --noconfirm git
 chmod +x $PWD/basics/*
 $PWD/basics/dependencies.sh
 $PWD/basics/zsh.sh

@@ -4,8 +4,8 @@
 
 # setting up vim
 # preparation
-sudo xbps-install -Syu
-sudo xbps-install -Sy neovim
+sudo pacman -Syu --noconfirm
+sudo pacman -S --noconfirm neovim
 mkdir -p $HOME/.config/nvim
 touch $HOME/.config/nvim/init.vim
 echo "set showmatch" >> $HOME/.config/nvim/init.vim

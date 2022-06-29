@@ -1,24 +1,22 @@
 #!/bin/sh
-sudo xbps-install -Sy libX11 xwallpaper xauth xorg-minimal libXinerama libXft xrdb xinit libXrandr xrandr xclip xorg-minimal mesa setxkbmap
+sudo pacman -S --noconfirm xwallpaper xorg-xauth xorg xorg-xrdb xorg-xinit xrandr xclip mesa xorg-setxkbmap
 
 # removed for testing purposes
-sudo xbps-install -Sy xorg-fonts
+sudo pacman -S --noconfirm xorg-fonts
 
 
 
 # amdgpu
-#sudo xbps-install xf86-video-amdgpu
+#sudo pacman -S --noconfirm xf86-video-amdgpu
 
 # nvidia
-#sudo xbps-install xf86-video-nouveau
+#sudo pacman -S --noconfirm xf86-video-nouveau
 
 # vmware
-sudo xbps-install -Sy xf86-video-vmware
+sudo pacman -S --noconfirm xf86-video-vmware
 
 
-touch /tmp/x.sh
-echo 'export XAUTHORITY="$HOME/.config/x/Xauthority"' >> /tmp/x.sh
-sudo mv /tmp/x.sh /etc/profile.d/
+
 mkdir -p $HOME/.config/x
 ln -s /etc/X11/xinit/xinitrc $HOME/.config/x/xinitrc #TODO: Find a way to set .xinitrc location
 sudo chown $USER:$USER $HOME/.config/x/xinitrc
@@ -35,7 +33,7 @@ echo 'exec dwm' >> $HOME/.config/x/xinitrc
  wget -O $HOME/.config/x/wallpaper.jpg https://ia800301.us.archive.org/18/items/mma_a_country_road_437586/437586.jpg
 
 #add icon fonts
-sudo xbps-install -Sy p7zip wget
+sudo pacman -S --noconfirm p7zip wget
 mkdir ~/.config/fonts
 ln -s ~/.config/fonts ~/.fonts
 wget -O /tmp/fa.zip https://github.com/FortAwesome/Font-Awesome/releases/download/6.1.1/fontawesome-free-6.1.1-desktop.zip
@@ -44,8 +42,8 @@ cp /tmp/fa/*/otfs/* ~/.fonts
 
 # SXHKD setup
 mkdir -p $HOME/.config/sxhkd
-echo 'super + d' > $HOME/.config/sxhkd/sxhkdrc
-echo '\trofi -show drun -theme $HOME/.config/rofi/themes/appmenu.rasi' >> $HOME/.config/sxhkd/sxhkdrc
-echo '\n' >> $HOME/.config/sxhkd/sxhkdrc
-echo 'super + Return'  >> $HOME/.config/sxhkd/sxhkdrc
-echo '\tst'  >> $HOME/.config/sxhkd/sxhkdrc
+echo -e 'super + d' > $HOME/.config/sxhkd/sxhkdrc
+echo -e '\trofi -show drun -theme $HOME/.config/rofi/themes/appmenu.rasi' >> $HOME/.config/sxhkd/sxhkdrc
+echo -e '\n' >> $HOME/.config/sxhkd/sxhkdrc
+echo -e 'super + Return'  >> $HOME/.config/sxhkd/sxhkdrc
+echo -e '\tst'  >> $HOME/.config/sxhkd/sxhkdrc
