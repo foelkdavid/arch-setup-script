@@ -4,10 +4,11 @@
 # these are my own forks, using plugins that have to be manually merged.
 git clone -- https://github.com/foelkdavid/dwm /tmp/sources/dwm
 git clone -- https://github.com/foelkdavid/st /tmp/sources/st
+git clone -- https://github.com/foelkdavid/dwmblocks /tmp/sources/dwmblocks
 
 # other, 
 git clone -- https://github.com/nsxiv/nsxiv /tmp/sources/nsxiv
-git clone -- https://github.com/torrinfail/dwmblocks /tmp/sources/dwmblocks
+
 
 mkdir -p $HOME/.local/src/
 mv /tmp/sources/dwm $HOME/.local/src/dwm && cd $HOME/.local/src/dwm && make && sudo make install
@@ -22,7 +23,9 @@ cd $HOME/.config
 mkdir dwm dwmblocks st nsxiv
 ln -s ~/.local/src/dwm/config.h dwm/config.h
 ln -s ~/.local/src/st/config.h st/config.h
-ln -s ~/.local/src/dwmblocks/blocks.h dwm/blocks.h
+ln -s ~/.local/src/dwmblocks/blocks.h dwmblocks/blocks.h
+ln -s ~/.local/src/dwmblocks/modules dwmblocks/modules
+chmod -R +x ~/.local/src/dwmblocks
 ln -s ~/.local/src/nsxiv/config.h nsxiv/config.h
 
 

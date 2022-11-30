@@ -1,23 +1,11 @@
 #!/bin/sh
 
-rootcheck() {
-    [ $(id -u) -eq 0 ] && return 1 || return 0
-}
-
-# naive networkcheck
-networkcheck() {
-    ping -c 2 voidlinux.org > /dev/null && return 0 || return 1
-}
-
-echo -e "${bold}Setting up zsh:${reset}"
-printf "Run as root? \n"; rootcheck && echo [ok] || exit ; sleep 0.4
-printf "Checking Connection: \n"; networkcheck && echo [ok] || exit ; sleep 0.4
 
 
 # setting up vim
 # preparation
-sudo xbps-install -Syu
-sudo xbps-install -Sy neovim
+sudo pacman -Syu --noconfirm
+sudo pacman -S --noconfirm neovim
 mkdir -p $HOME/.config/nvim
 touch $HOME/.config/nvim/init.vim
 echo "set showmatch" >> $HOME/.config/nvim/init.vim
